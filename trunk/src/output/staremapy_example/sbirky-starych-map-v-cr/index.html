@@ -1,0 +1,711 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<html>
+
+<head>
+
+  <title>ddd</title>
+  <link rel="alternate" type="application/atom+xml" title="Blog Stare mapy - Atom" href="http://staremapy.blogspot.com/feeds/posts/default" />
+  <link rel="alternate" type="application/rss+xml" title="Blog Stare mapy - RSS" href="http://staremapy.blogspot.com/feeds/posts/default?alt=rss" />
+
+
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta name="verify-v1" content="ylNTe6eqQeS7627vpFHpXufK1CsCDNC/jEqrFcNscQE=" />
+  <style type="text/css">
+  #g_title p, #g_footer p, #g_description p {
+    margin: 0;
+  }
+  /*
+
+  	-- -- -- -- -- -- --
+  	Browser Fixes
+  	-- -- -- -- -- -- --
+  	
+  	This file uses CSS filtering methods to fix various
+  	layout bugs.
+
+  	Each of the following three imported files is a 
+  	separate, browser-specific CSS file that keeps all 
+  	hacks out of the main style sheet.
+  	
+  	Over time, as supporting these browsers no longer
+  	remains a priority, cleaning up the hacks is as
+  	easy as deleting the @import statement below, or
+  	simply no longer linking this file from the HTML.
+  	
+  */
+
+  /* 
+    fix ie6 "peekaboo bug" using the "holly hack". 
+    Note, this style only gets applied to ie6
+  */
+  * html .wrapper {
+    height: 0.1%;
+  }
+
+  /* 
+   * IE5 mac - overrides the IE/Win hack 
+   */
+
+  /*\*//*/
+
+  * html #threecolumn div {
+  	height: auto;
+  }
+
+  /**/
+
+
+  /* 
+   * IE5/Win-specific CSS -ensures #container wraps all content on window resize
+   */
+
+  @media tty {
+   i{content:"\";/*" "*/}} * html #container { height: 1%; } /*";}
+  }/* */
+  /* Styling for editable elements. Eventually, this will be part of the style. */
+  .editable {
+    border: 1px dashed blue;
+  }
+  
+  #footer {
+    clear: both;
+  }
+  
+  /* Extra divs hidden by default. The custom CSS can override this though */
+  #extraDiv1, #extraDiv2, #extraDiv3, #extraDiv4, #extraDiv5, #extraDiv6 {
+    display: none;
+  }
+  
+  a img,:link img,:visited img {border: none;}
+
+  body {
+    text-align: center;
+  }
+  #container {
+    width: 718px;
+    text-align: left;
+    margin: 0 auto;
+  }
+  #main-content {
+    float: left;
+    width: 420px;
+  }
+  #sidebar {
+    float: left;
+    width: 140px;
+  }
+  #sidebar-alternate {
+    float: left;
+    width: 140px;
+  } 
+  #footer {
+    clear: both;
+  }
+  /** BEGIN CUSTOM SKIN **/
+  /*
+
+  	-- -- -- -- -- -- --
+  	Base CSS
+  	-- -- -- -- -- -- --
+  	
+  	This file simply removes default styling on most HTML elements in 
+  	order to reduce the need to later override them.
+  	
+  */
+
+  h1,h2,h3,h4,h5,h6,pre,code,p {font-size: 1em;}
+  dl,li,dt,dd,h1,h2,h3,h4,h5,h6,pre,form,body,html,p,blockquote,fieldset,input {margin: 0; padding: 0;}
+  a img,:link img,:visited img {border: none;}
+  address {font-style: normal;}/*
+
+
+  	-- -- -- -- -- -- --
+  	Type Scheme: Deco
+  	-- -- -- -- -- -- --
+  	
+  */
+
+  body {
+  	font: 76% Verdana, sans-serif;
+  }	
+
+
+  h1, h2, h3, h4, h5, h6, p.description {
+  	font-family: "Trebuchet MS", Trebuchet, sans-serif;
+
+  }
+  h1 {
+  	font-size: 3em;
+  	font-weight: bold;
+  	letter-spacing: 2px;
+  }
+  h2 {
+  	font-size: 2em;
+  	font-weight: normal;
+  }
+  h3 {
+  	font-size: 1.5em;
+  }
+  h4 {
+  	font-size: 1.2em;
+  	letter-spacing: 0.2em;
+  }
+  h5 {
+  	font-size: 1.2em;
+  }
+  h6 {
+  	font-size: 1em;
+  	font-weight: bold;
+  }
+
+  p, td {
+  	line-height: 1.8em;
+  }
+  code, kbd {
+  	font-size: 1.25em;
+  }/*
+
+  	-- -- -- -- -- -- --
+  	STYLE: Chemise
+  	-- -- -- -- -- -- --
+
+  */
+
+
+
+
+  /* ie6win */
+
+  #footer {
+  	height: 1%;
+  }
+
+  /* ie5mac */
+
+  /*\*//*/
+  #footer { height: auto; }
+  /**/
+
+  /* ie5 win */
+  @media tty {
+   i{content:"\";/*" "*/}} td, * html th { font-size: 0.8em; } h1 { height: 1%; } /*";}
+  }/* */
+
+  /* Basic HTML style
+  ----------------------------------------------- */
+  a:link {
+  	padding: 0 2px;
+  }
+  body {
+  	font: 80% "Lucida Grande", "Lucida Sans Unicode", sans-serif;
+  }
+  blockquote {
+          margin: 1em 1em;
+          font-style: italic;
+  }
+  caption {
+  	font-size: 1em;
+  	text-align: left;
+  	padding: 4px 6px;
+  }
+  	font-weight: bold;
+  }
+  dd {
+  	margin: 0 0 1em 1em;
+  }
+  hr {
+  	color: #222;
+  	background: #222;
+  	border-color: #222;
+  }
+  td {
+  	padding: 2px 5px;
+  	vertical-align: top;
+  }
+  th {
+  	font-size: 1em;
+  	padding: 2px 5px;
+  	text-align: left;
+  	border-top: solid 1px #000;
+  	border-right: solid 1px #000;
+  	border-bottom: solid 1px #000;
+  }
+
+  td p {
+  	margin-top: 0;
+  }
+
+  ul li {
+  	margin-bottom: 0.8em;
+  }
+  ol li {
+  	list-style: lower-alpha;
+  	margin-left: 2em;
+  	margin-bottom: 0.8em;
+  }
+
+
+
+
+
+
+
+
+  /* Header
+  ----------------------------------------------- */
+  #container {
+  }
+
+  #header {
+  	border-bottom: solid 1px #000;
+  	position: relative;
+  	margin: 0;
+  	margin-bottom: 10px;
+  }
+  p.description {
+  	font-size: 1em;
+  	margin: 0;
+  	padding: 0.5em 15px;
+  	border-bottom: solid 1px #000;
+  }
+  #g_description {
+  	margin: 1em 0 1em 15px;
+  }
+
+
+  /* Custom font definitions
+  ----------------------------------------------- */
+  p {
+  	margin: 1em 0;
+  	line-height: 1.5;
+  }
+  td, td p {
+  	line-height: 1.5;
+  }
+  h1,h2,h3,h4,h5,h6 {
+  	font-family: "Trebuchet MS", arial, sans-serif;
+  }
+  h1 {
+  	text-align: left;
+  	font-weight: normal;
+  	font-size: 2em;
+  	font-weight: bold;
+  	line-height: 1.5em;
+  	padding: 30px 20px 10px 15px;
+  	margin: 0;
+  	border-top: solid 1px #000;
+  	border-bottom: solid 1px #000;
+  }
+
+  h2 {
+  	font-size: 1.5em;
+  	color: #000;
+  	margin: 0 0 1em 0;
+  	background: url(/-/include/style/chemise/slate/h2.gif) no-repeat left bottom;
+
+  }
+  h3 {
+  	font-size: 1.2em;
+  	padding: 4px 10px;
+  	margin-top: 0.5em;
+  }
+  h4 {
+  	margin-top: 0.6em;
+  	margin-left: 0.2em;
+  	font-size: 0.9em;
+  }
+  h5 {
+  	padding-left: 10px;
+  	font-size: 1em;
+  }
+  h6 {
+  	font-size: 0.9em;
+  }
+
+  a:link {
+     	color: #f6952e;
+  }
+  a:hover {
+  	background-color: #dbd4a6;
+  }
+
+  /* sidebar
+  ----------------------------------------------- */
+  #sidebar, #sidebar-alternate {
+  	margin-bottom: 2em;
+  }
+  #sidebar h3, #sidebar-alternate h3 {
+  	font-weight: normal;
+  	font-size: 1.3em;
+  	border-top: solid 1px #000;
+  	margin-bottom: 0.5em;
+  }
+  #sidebar h4, #sidebar h5, #sidebar h6,
+  #sidebar-alternate h4, #sidebar-alternate h5, #sidebar-alternate h6,
+  #sidebar p, #sidebar-alternate p {
+  	margin-left: 10px;
+  	margin-right: 20px;
+  }
+
+  #sidebar li, #sidebar-alternate li {
+  	margin-bottom: 0.8em;
+  }
+  #sidebar .links {
+  	margin-bottom: 2em;
+  }
+  #adsense {
+  	text-align: center;
+  }
+
+
+  .editable {
+  	border: dashed 1px #666;
+  }
+
+
+
+  /* layout patches
+  ----------------------------------------------- */
+  #twocolumn-liquid-left #sidebar {
+  	float: left;
+  }
+  #twocolumn-liquid-right #sidebar {
+  	float: right;
+  }
+  #threecolumn #sidebar-alternate {
+  	float: right;
+  }
+
+
+
+  /* Footer
+  ----------------------------------------------- */
+  #footer {
+  	padding: 1px 15px;
+  	border-top: solid 1px #000;
+  	border-bottom: solid 1px #000;
+  	clear: both;
+  }
+  #footer hr {
+  	display: none;
+  }
+
+
+
+  /* fixed 1 column
+  ----------------------------------------------- */
+  #onecolumn #main-content .wrapper {
+  	margin: 20px;
+  }
+
+
+  /* fixed left 2 column
+  ----------------------------------------------- */
+  #twocolumn-left #main-content .wrapper {
+  	padding: 0 20px;
+  }
+
+
+
+  /* fixed right 2 column
+  ----------------------------------------------- */
+  #twocolumn-right #main-content .wrapper {
+  	padding: 0 20px;
+  }
+
+  /* fixed right 3 column
+  ----------------------------------------------- */
+  #threecolumn #main-content .wrapper {
+  	padding: 0 20px;
+  }
+  #threecolumn #sidebar h3, #threecolumn #sidebar-alternate h3 {
+  	margin-bottom: 0;
+  }
+
+  /* liquid left 2 column
+  ----------------------------------------------- */
+  #twocolumn-liquid-left #main-content .wrapper {
+  	margin: 0 20px;
+  }
+
+
+  /* liquid right 2 column
+  ----------------------------------------------- */
+  #twocolumn-liquid-right #main-content .wrapper {
+  	margin: 0 20px;
+  }
+  /*
+
+  	-- -- -- -- -- -- --
+  	COLOR SCHEME: Ember
+  	-- -- -- -- -- -- --
+
+  */
+
+
+  /* Basic HTML style
+  ----------------------------------------------- */
+  body {
+  	color: #323229;
+  	background: #BFBFBF url(/-/includes/style/chemise/ember/body-bg.gif) repeat-y center top;
+  }
+  caption {
+  	color: #fff;
+  	background: #2AA63B url(/-/includes/style/chemise/ember/h3.gif) repeat;
+  }
+  code, kbd {
+  	color: #F68A21;
+  }
+  dt {
+  	color: #F68A21;
+  }
+  hr {
+  	background: #604829;
+  	border-color: #604829;
+  	border-top: none;
+  }
+  th {
+  	color: #fff;
+  	background: #F6922E url(/-/includes/style/chemise/ember/th.gif) repeat-x 0 0;
+  	border-top: solid 1px #F8A54C;
+  	border-right: solid 1px #F4782D;
+  	border-bottom: solid 1px #F4782D;
+  }
+
+  ul li {
+  	list-style: url(/-/includes/style/chemise/ember/h5.gif);
+  }
+
+
+
+
+
+
+  /* Header
+  ----------------------------------------------- */
+  #container {
+  	background: none;
+  }
+
+  #header {
+  	border-bottom: solid 3px #fff;
+  }
+  p.description {
+  	color: #fff;
+  	background: #F68B20 url(/-/includes/style/chemise/ember/description.gif) repeat-x 0 0;
+  	border-top: solid 1px #F4782D;
+  	border-bottom: solid 1px #F8A54C;
+  }
+
+
+
+  /* Custom font definitions
+  ----------------------------------------------- */
+  h1 {
+  	color: #fff;
+  	background: #55554C url(/-/includes/style/chemise/ember/h1.gif) repeat-x left bottom;
+  	border-top: solid 1px #72726E;
+  	border-bottom: solid 3px #53534A;
+  }
+  h2 {
+  	color: #B4543D;
+  	background: url(/-/includes/style/chemise/ember/h2.gif) no-repeat left bottom;
+  }
+  h3 {
+  	color: #fff;
+  	background: #45453B url(/-/includes/style/chemise/ember/h3.gif) repeat;
+  }
+  h4 {
+  	color: #B4543D;
+  }
+  h5 {
+  	color: #F68A21;
+  	background: url(/-/includes/style/chemise/ember/h5.gif) no-repeat 0 0.5em;
+  }
+
+
+  /* sidebar
+  ----------------------------------------------- */
+  #sidebar, #sidebar-alternate {
+  	background: url(/-/includes/style/chemise/ember/sidebar.gif) no-repeat right 0;
+  }
+  #sidebar h3, #sidebar-alternate h3 {
+  	color: #B4543D;
+  	background: none;
+  	border-top: none;
+  }
+
+
+  /* liquid variation
+  ----------------------------------------------- */
+  #twocolumn-liquid-left #container, #twocolumn-liquid-right #container {
+  	background: #F0ECCD url(/-/includes/style/chemise/ember/container-liquid-left.gif) repeat-y left top;
+  }
+  #twocolumn-liquid-left #container .wrapper, #twocolumn-liquid-right #container .wrapper {
+  	background: url(/-/includes/style/chemise/ember/container-liquid-right.gif) repeat-y right top;
+  }
+  #twocolumn-liquid-left #container .wrapper .wrapper, #twocolumn-liquid-right #container .wrapper .wrapper {
+  	background: none;
+  }
+
+
+  #twocolumn-right #sidebar, #twocolumn-liquid-right #sidebar, #threecolumn #sidebar-alternate {
+  	background: url(/-/includes/style/chemise/ember/sidebar.gif) no-repeat left 0;
+  }
+
+
+
+  .editable {
+  	border: dashed 1px #f60;
+  }
+
+
+
+  /* Footer
+  ----------------------------------------------- */
+  #footer {
+  	color: #fff;
+  	background: #55554C url(/-/includes/style/chemise/ember/h1.gif) repeat-x left bottom;
+  	border-top: solid 1px #72726E;
+  	border-bottom: solid 3px #53534A;
+  }
+
+  /** END CUSTOM SKIN **/
+  body { background: #8b754f url(http://staremapy.mzk.cz/img/body-bg-100.jpg) repeat-y center top; }
+h1 { color: #4b3611; font: normal normal 200% Georgia, Times New Roman,sans-serif; border: none; background: none; margin: 0; }
+#header { border: none; background-color: transparent; margin: 0; }
+p.description { background: transparent url(http://staremapy.mzk.cz/img/divider.gif) no-repeat 0px 20px; margin: 0; padding-top: 30px; border: none; }
+#header div.wrapper { background: transparent url(http://staremapy.mzk.cz/img/h1-plain-100.jpg) no-repeat top left; min-height: 113px; }
+#container { background: transparent url(http://staremapy.mzk.cz/img/text-bg-100.jpg) no-repeat 0px 113px; }
+#footer { background: transparent url(http://staremapy.mzk.cz/img/star.gif) no-repeat 490px 0px; height: 140px; border: 0px; color: #B4543D; font-size: xx-small; }
+
+</style>
+
+  <!-- Hack to avoid flash of unstyled content in IE -->
+  <script> </script>
+<script type="text/javascript" src="http://www.google.com/jsapi?key=ABQIAAAA9pSslyaYyyl6x8HKrHAZvxQqaeEzdkZ3y41uBuUPSYJ3soBgDBRBCmc_jRKXzUPxiF1FoHUhtwcRPw"></script>
+    
+<script type="text/javascript">
+  google.load("feeds", "1"); 
+  var feed = new google.feeds.Feed("http://staremapy.blogspot.com/feeds/posts/default");
+  feed.load(function(result) {
+    if (!result.error) {
+      var container = document.getElementById("myfeed");
+      for (var i = 0; i < result.feed.entries.length; i++) {
+        var entry = result.feed.entries[i];
+        var div = document.createElement("div");
+        div.appendChild(document.createTextNode(entry.title));
+        container.appendChild(div);
+      }
+    }
+  });
+</script>
+</head>
+
+<body id="threecolumn">
+  <div id="container">
+
+    <div class="wrapper">
+      <div id="header">
+        <div class="wrapper">
+          <h1 id="page-title"><div id='g_title'>Stare a historicke mapy Cech, Moravy a Slezska <p class="separator" style="text-align: center; clear: both;"></p></div></h1>
+          <div style="clear: both"></div>
+          <p class="description"><div id='g_description'>  
+
+
+
+
+
+
+
+
+
+<script type="text/javascript">//<!--
+var newSS, styles="\
+body { background: #8b754f url(http://staremapy.mzk.cz/img/body-bg-100.jpg) repeat-y center top; }\
+h1 { color: #4b3611; font: normal normal 200% Georgia, Times New Roman,sans-serif; border: none; background: none; margin: 0; }\
+#header { border: none; background-color: transparent; margin: 0; }\
+p.description { background: transparent url(http://staremapy.mzk.cz/img/divider.gif) no-repeat 0px 20px; margin: 0; padding-top: 30px; border: none; }\
+#header div.wrapper { background: transparent url(http://staremapy.mzk.cz/img/h1-plain-100.jpg) no-repeat top left; min-height: 113px; }\
+#container { background: transparent url(http://staremapy.mzk.cz/img/text-bg-100.jpg) no-repeat 0px 113px; }\
+#footer { background: transparent url(http://staremapy.mzk.cz/img/star.gif) no-repeat 490px 0px; height: 140px; border: 0px; color: #B4543D; font-size: xx-small; }\
+";
+ if(document.createStyleSheet) {
+ document.createStyleSheet("javascript:'"+styles+"'"); 
+ } else {
+ newSS=document.createElement('link'); 
+ newSS.rel='stylesheet'; 
+ newSS.href='data:text/css,' + escape(styles);
+ document.getElementsByTagName("head")[0].appendChild(newSS); 
+ }
+//--></script>
+<content type='xhtml'><div xmlns="http://www.w3.org/1999/xhtml"><div class="sites-layout-name-right-sidebar-hf sites-layout-vbox"><div class="sites-layout-tile sites-tile-name-header"><div dir="ltr">Sbírky starých map v České Republice<br /><br /><h2><a name="TOC-Digitalizovan-star-mapy-na-eho-zem-" />Digitalizované staré mapy našeho území online<br /></h2></div></div><table cellspacing="0" class="sites-layout-hbox"><tbody><tr><td class="sites-layout-tile sites-tile-name-content-1"><div dir="ltr"><h4><a name="TOC-Laborato-geoinformatiky-Univerzity-" />Laboratoř geoinformatiky Univerzity J.E.Purkyně v Ústí nad Labem</h4>
+<p>Prezentace starých mapových děl z území Čech, Moravy a Slezska</p><p><a href="http://www.google.com/url?q=http%3A%2F%2Foldmaps.geolab.cz%2F&amp;sa=D&amp;sntz=1&amp;usg=AFrqEze8WoPk4pcH2NPg_065VJIH6VoiEw">http://oldmaps.geolab.cz/</a><br /></p>
+<p><a href="http://www.google.com/url?q=http%3A%2F%2Foldmaps.geolab.cz%2Fmap_root.pl%3Fz_height%3D500%26lang%3Dcs%26z_width%3D800%26z_newwin%3D0%26map_root%3D1vm&amp;sa=D&amp;sntz=1&amp;usg=AFrqEzdpegmq8eh6L--fwGTvgkGS7ASvKA">I. vojenské mapování</a></p>
+<p><a href="http://www.google.com/url?q=http%3A%2F%2Foldmaps.geolab.cz%2Fmap_root.pl%3Fz_height%3D500%26lang%3Dcs%26z_width%3D800%26z_newwin%3D0%26map_root%3D2vm&amp;sa=D&amp;sntz=1&amp;usg=AFrqEzfaOLlyXgUa2lI6kITsjXKM1_ibLA">II. vojenské mapování</a></p>
+<p><a href="http://www.google.com/url?q=http%3A%2F%2Foldmaps.geolab.cz%2Fmap_root.pl%3Fz_height%3D500%26lang%3Dcs%26z_width%3D800%26z_newwin%3D0%26map_root%3D3vm&amp;sa=D&amp;sntz=1&amp;usg=AFrqEzcAVTccEa_NoDToWliwetgqadQzfQ">III. vojenské mapování</a></p>
+<p><a href="http://www.google.com/url?q=http%3A%2F%2Foldmaps.geolab.cz%2Fmap_root.pl%3Fz_height%3D500%26lang%3Dcs%26z_width%3D800%26z_newwin%3D0%26map_root%3Dmul&amp;sa=D&amp;sntz=1&amp;usg=AFrqEzeVouzKLVpG18kU2hlfeWGkfXOOQA">Müllerovo mapování</a></p>
+<p><a href="http://www.google.com/url?q=http%3A%2F%2Foldmaps.geolab.cz%2Fstkatr%2Fzoom%2Fzoom_htm%2F&amp;sa=D&amp;sntz=1&amp;usg=AFrqEzdQPyMPr6rmojb3-upJhLpexL4jfw">Stabilní katastr</a></p>
+<h4><a name="TOC-Seznam.cz:-mapy.seznam.cz" />Seznam.cz: mapy.seznam.cz<br /></h4><p><a href="http://www.google.com/url?q=http%3A%2F%2Fwww.mapy.cz%2F%23x%3D135266304%40y%3D134463488%40z%3D6%40mm%3DA&amp;sa=D&amp;sntz=1&amp;usg=AFrqEzd3mMlbhKQFD9tkv6nf4IhhC3euMA">II. vojenské mapování</a><br /></p><h4><a name="TOC-Moravsk-zemsk-knihovna" />Moravská zemská knihovna</h4>
+<p>Mollova mapová sbírka - <a href="http://www.google.com/url?q=http%3A%2F%2Falmor.mzk.cz%2Fmoll&amp;sa=D&amp;sntz=1&amp;usg=AFrqEzcfuYpQuf6Z3--IOe_v6ixeMTmoNw">http://almor.mzk.cz/moll</a> </p>
+<h4><a name="TOC-V-deck-knihovna-v-Olomouci" />Vědecká knihovna v Olomouci</h4>
+<p>Digitální knihovna map na <a href="http://www.google.com/url?q=http%3A%2F%2Fmapy.vkol.cz%2F&amp;sa=D&amp;sntz=1&amp;usg=AFrqEzdfqJ_KwqBUyvbnO5MCOKKCO11COQ"><font color="#0000ff">http://mapy.vkol.cz/</font></a> </p>
+<h4><a name="TOC-Jiho-esk-v-deck-knihovna-v-esk-ch-B" />Jihočeská vědecká knihovna v Českých Budějovicích</h4>
+<p>Digitální knihovna map na <a href="http://www.google.com/url?q=http%3A%2F%2Farchiv.cbvk.cz%2Fhistoricke_mapy%2F&amp;sa=D&amp;sntz=1&amp;usg=AFrqEzcNxAvio9oIvC0cDQdh79ll94Gl0w">http://archiv.cbvk.cz/historicke_mapy/</a><a href="http://www.google.com/url?q=http%3A%2F%2Fmapy.vkol.cz%2F&amp;sa=D&amp;sntz=1&amp;usg=AFrqEzdfqJ_KwqBUyvbnO5MCOKKCO11COQ" /> </p>
+<h4><a name="TOC-NOVINKA:-Z-pado-esk-muzeum-v-Plzni" />NOVINKA: Západočeské muzeum v Plzni</h4><p style="text-align:center;clear:both"><br /></p><h4><a name="TOC-Digitalizovan-mapy-ze-sb-rek-Z-M:" /><span style="color:rgb(50, 50, 41);font-family:Lucida Grande;font-size:13px;font-weight:normal;letter-spacing:normal;line-height:19px"><span style="line-height:normal">Digitalizované mapy ze sbírek ZČM:</span></span><br /></h4><h4><a name="TOC-http:-www.zcm.cz-mapy-" /><span style="color:rgb(50, 50, 41);font-family:Lucida Grande;font-size:13px;font-weight:normal;letter-spacing:normal"><a href="http://www.google.com/url?q=http%3A%2F%2Fwww.zcm.cz%2Fmapy%2F&amp;sa=D&amp;sntz=1&amp;usg=AFrqEzeG0NTO1ZJ2rqBbVTCBmNxr-1SFow">http://www.zcm.cz/mapy/</a></span></h4><h4><a name="TOC-NOVINKA:-M-stsk-knihovna-v-Praze" />NOVINKA: Městská knihovna v Praze<br /></h4><h4 style="margin:0.6em 0px 0px 0.2em;padding:0px;letter-spacing:0.2em;font-family:Trebuchet MS,arial,sans-serif;font-size:0.9em;color:rgb(180, 84, 61)"><a name="TOC-Orienta-n-pl-n-hlavn-ho-m-sta-Prahy" /><span style="color:rgb(50, 50, 41);font-family:Lucida Grande;font-size:13px;font-weight:normal;letter-spacing:normal;line-height:19px"><span style="line-height:normal">Orientační plán hlavního města Prahy s okolím (1938):</span></span></h4><h4 style="margin:0.6em 0px 0px 0.2em;padding:0px;letter-spacing:0.2em;font-family:Trebuchet MS,arial,sans-serif;font-size:0.9em;color:rgb(180, 84, 61)"><a name="TOC-http:-www.mlp.cz-mapa-prahy-1938-" /><span style="color:rgb(50, 50, 41);font-family:Lucida Grande;font-size:13px;font-weight:normal;letter-spacing:normal;line-height:19px"><span style="line-height:normal"><a href="http://www.google.com/url?q=http%3A%2F%2Fwww.mlp.cz%2Fmapa-prahy-1938%2F&amp;sa=D&amp;sntz=1&amp;usg=AFrqEzeSz6Q3L1E6Thf_2URKMrTxrvWTKQ">http://www.mlp.cz/mapa-prahy-1938/</a></span></span></h4><h4 style="margin:0.6em 0px 0px 0.2em;padding:0px;letter-spacing:0.2em;font-family:Trebuchet MS,arial,sans-serif;font-size:0.9em;color:rgb(180, 84, 61)"><a name="TOC-1" /><br /></h4><h4><a name="TOC-Historick-stav-AV-R-" />Historický ústav AV ČR <br /></h4>
+<p><a href="http://www.google.com/url?q=http%3A%2F%2Fwww.hiu.cas.cz%2Fmapy%2F&amp;sa=D&amp;sntz=1&amp;usg=AFrqEze65eEwJMX1cMpaQz5mLOYfhhq4gQ">Mapová sbírka Historického ústavu AV ČR</a></p>
+<h4><a name="TOC-esk-ad-zem-m-ick-a-katastr-ln-" />Český úřad zeměměřický a katastrální <br /></h4>
+<p><a href="http://www.google.com/url?q=http%3A%2F%2Fhistorickemapy.cuzk.cz%2F&amp;sa=D&amp;sntz=1&amp;usg=AFrqEzd5IlCKTbnbs1aN13nCqWEKPJSGEg">http://historickemapy.cuzk.cz/</a> </p>
+<h4><a name="TOC-Ministerstvo-ivotn-ho-prost-ed-Mapo" />Ministerstvo životního prostředí, Mapový server Portálu veřejné správy</h4>
+<p><a href="http://www.google.com/url?q=http%3A%2F%2Fgeoportal.cenia.cz%2Fmapmaker%2Fcenia%2Fmap%2F%3Fwiz_id%3D46%26wiz_special_param%3D%26rect%3D-627000%3A-1170550%3A-574000%3A-1133450%26lang%3Dcz%26PHPSESSID%3D&amp;sa=D&amp;sntz=1&amp;usg=AFrqEzcK5JaWtxcfNgjciKmknSFVw1eaUQ">II. vojenské mapování</a></p>
+<h2><a name="TOC-Dal-zdroje-star-ch-map" />Další zdroje starých map</h2>
+<h4><a name="TOC-Mapy-Brna---na-str-nk-ch-Vilema-Wal" />Mapy Brna - na stránkách Vilema Waltera<br /></h4>
+<p><a href="http://www.google.com/url?q=http%3A%2F%2Fwww.vilemwalter.cz%2Fmapy%2F&amp;sa=D&amp;sntz=1&amp;usg=AFrqEzfKa2D8glDTNWynbDVP56nXKzTCeA">http://www.vilemwalter.cz/mapy/</a> </p>
+<p><a href="http://www.google.com/url?q=http%3A%2F%2Fwww.vilemwalter.cz%2Fmapabrna%2F&amp;sa=D&amp;sntz=1&amp;usg=AFrqEzfNHU4XCydioL8dKXpwvzD5_KoqnQ">http://www.vilemwalter.cz/mapabrna/</a></p>
+<h4><a name="TOC-V-sledek-diplomov-pr-ce-na-VUT-" />Výsledek diplomové práce na ČVUT </h4>
+<p><a href="http://www.google.com/url?q=http%3A%2F%2Fmapserver.fsv.cvut.cz%2Fantos%2F&amp;sa=D&amp;sntz=1&amp;usg=AFrqEzcNBxTZu8ssSYaL4FutNTcZf8_VUA">http://mapserver.fsv.cvut.cz/antos/</a><br /></p>
+<h4><a name="TOC-Digitalizovan-soubor-map-tisknut-ch" />Digitalizovaný soubor map tisknutých pro KB<br /></h4>
+<p><a href="http://www.google.com/url?q=http%3A%2F%2Fmujweb.cz%2Fwww%2Fmapy%2F&amp;sa=D&amp;sntz=1&amp;usg=AFrqEzcJO9tjJtO1u0AJ7m-NewQJaLIjVA">http://mujweb.cz/www/mapy/</a></p>
+<h4><a name="TOC-Mapy-opevn-n-z-II-sv-tov-v-lky" />Mapy opevnění z II světové války</h4>
+<p><a href="http://www.google.com/url?q=http%3A%2F%2Fmapy.opevneni.cz%2F&amp;sa=D&amp;sntz=1&amp;usg=AFrqEzdF6GSXAYtjoP1uWElCG-GdhwZfNQ">http://mapy.opevneni.cz/</a></p>
+<h2><a name="TOC-Dal-odkazy..." />Další odkazy...</h2>
+<p><a href="http://www.google.com/url?q=http%3A%2F%2Fwww.dejiny.nln.cz%2F&amp;sa=D&amp;sntz=1&amp;usg=AFrqEzdg0uvcfwR96UK-LrXdhF4C09vDKA">Dějiny a současnost</a> - ĎaS - kulturně historická revue<br /></p>
+<p><a href="http://www.google.com/url?q=http%3A%2F%2Fwww.kralovstvimap.cz%2Fprodukty%2Fnastenne-mapy%2Fhistoricke-mapy&amp;sa=D&amp;sntz=1&amp;usg=AFrqEzeZmhNigZlUOHMxhI5dFIZALC7G-A">Kralovství map</a> - Obchod - Možnost zakoupit přetisky některých starých map </p>
+<p><a href="http://www.google.com/url?q=http%3A%2F%2Fklaudyan.psomart.cz%2F&amp;sa=D&amp;sntz=1&amp;usg=AFrqEzdLkSf2zqPKWxpwh81B-0KTHvUGNg">Klaudián</a> - internetový magazín pro historickou geografii a enviromentální vědy, žije?<br /></p>
+<p><a href="http://www.google.com/url?q=http%3A%2F%2Fgeografie.webzdarma.cz%2F&amp;sa=D&amp;sntz=1&amp;usg=AFrqEzcbIXt9MQW0phvhns_O7Pirg-mq0w">Stránky studentů geografie v Brně</a></p>
+<p>Stránky nejen pro kartografy na <a href="http://www.google.com/url?q=http%3A%2F%2Fkartografie.wz.cz%2F&amp;sa=D&amp;sntz=1&amp;usg=AFrqEzdV8KnQTyjHCo311aeVJGfm2fuKcA">http://kartografie.wz.cz/</a>  </p>
+<p>Onomastika: http://www.zanikleobce.cz/, toponyma na geonames.org, "Slovník Josef Rank"</p>
+<p><a href="http://www.google.com/url?q=http%3A%2F%2Fgrass.fsv.cvut.cz%2Fwiki%2Findex.php%2FGRASSwikiCZ&amp;sa=D&amp;sntz=1&amp;usg=AFrqEzdHvjGhWLehTSLcdm3F9sOocW4R5Q">Grass Wiki CZ</a> </p></div></td><td class="sites-layout-tile sites-tile-name-content-2 sites-canvas-sidebar"><div dir="ltr"><p>
+</p><h4><a name="TOC-Nejv-znamn-j-star-mapy" />Nejvýznamnější staré mapy </h4>
+
+<ul><li>Povídání o dějinách nejen české kartografie v <a href="http://www.google.com/url?q=http%3A%2F%2Fwww.geogr.muni.cz%2Fucebnice%2Fdejiny%2Fobsah.php&amp;sa=D&amp;sntz=1&amp;usg=AFrqEze4ZgFwl_dDjxg6j_vK5dmaNHyEhg">online učebnici</a>. </li><li><a href="http://www.google.com/url?q=http%3A%2F%2Fwww.staremapy.cz%2Fantos%2F&amp;sa=D&amp;sntz=1&amp;usg=AFrqEzfgqiiZpjgYfAuLsue1eD7Dr4PLiA">Ukázky digitalizovaných kopií významných map</a> jsou online v prezentaci Filipa Antoše a <span>Veroniky Bělecké</span>.<br />
+ </li></ul>
+<h4><a name="TOC-Hled-n-na-map-s-asovou-osou" />Hledání na mapě s časovou osou </h4><p style="text-align:left;clear:both">Jedním z cílů <a href="../projekt/index.html">projektu staremapy.cz</a> je jednoduché prohledávání databáze českých starých map na základě označení oblasti zájmu na mapě a rozmezí času, které vás zajímá.</p><p style="text-align:left;clear:both">Zatím je k dispozici jen prototyp, který obsahuje část sbírek Moravské zemské knihovny:<br /></p><p style="text-align:center;clear:both"><a href="http://www.google.com/url?q=http%3A%2F%2Ftimemap.mzk.cz%2F&amp;sa=D&amp;sntz=1&amp;usg=AFrqEzemdJ5gbIYTGCD5eOdJlHQeOkwTng">http://timemap.mzk.cz/</a></p><p style="text-align:center;clear:both"><img src="./timemap-mzk.jpg" style="border:0pt none" /></p><br /></div></td></tr></tbody></table><div class="sites-layout-tile sites-tile-name-footer"><div dir="ltr"><p>Copyright (C) 2006 - Projekt <a href="http://www.google.com/url?q=http%3A%2F%2Fwww.staremapy.cz%2F&amp;sa=D&amp;sntz=1&amp;usg=AFrqEzc3c3QU2jZ_V6_DHIsDVouoL4r0Iw" title="Staré a historické mapy Čech, Moravy a Slezska">Projekt Staré mapy</a><br />
+Založil <a href="http://www.google.com/url?q=http%3A%2F%2Fwww.klokan.cz%2F&amp;sa=D&amp;sntz=1&amp;usg=AFrqEzddDtyEUt7jqpwzWiE1xqnE5tv5aw">Klokan Petr Přidal</a></p>
+
+<p><br /></p>
+
+<p>
+Reklama: <a href="http://www.google.com/url?q=http%3A%2F%2Fwww.scootland.cz%2F&amp;sa=D&amp;sntz=1&amp;usg=AFrqEzeZBL6BQzhhjOf7ljonbz-Vh3XNag">Scootland - </a><a href="http://www.google.com/url?q=http%3A%2F%2Fwww.scootland.cz%2Fskutry%2F&amp;sa=D&amp;sntz=1&amp;usg=AFrqEzcUjFCI4yccPQd73O4HMAcd80c2vA">skútry, </a><a href="http://www.google.com/url?q=http%3A%2F%2Fwww.scootland.cz%2Fscooter-tuning-jaknato%2F&amp;sa=D&amp;sntz=1&amp;usg=AFrqEzfWc6ZhC9poSRoRsulffPNZ03FhQQ">scooter tuning, </a><a href="http://www.google.com/url?q=http%3A%2F%2Fwww.scootland.cz%2Feshop%2F&amp;sa=D&amp;sntz=1&amp;usg=AFrqEzeRSVFJxGye8NShepdLpR77gzdPYw">náhradní díly</a></p>
+
+
+</div></div></div></div></content>
+</div></p>
+          <div style="clear: both"></div>
+        </div>
+      </div>
+      <!-- /wrapper --><!-- /footer -->
+    </div>
+  </div>
+  <!-- /wrapper --><!-- /container -->
+
+<div id="extraDiv1"><span></span></div><div id="extraDiv2"><span></span></div>
+
+<div id="extraDiv3"><span></span></div><div id="extraDiv4"><span></span></div>
+<div id="extraDiv5"><span></span></div><div id="extraDiv6"><span></span></div>
+
+</body>
+</html>
+
+
