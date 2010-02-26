@@ -2,26 +2,28 @@
 
 <html>
 <head>
-  <title>$title</title>
+  <title>$file_cabinet.title</title>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
 
 
 
 <body>
-<h2>$title</h2>
-<p>revision: $revision<p>
-<p>updated: $updated<p>
+<h2>$file_cabinet.title</h2>
+<p>revision: $file_cabinet.revision<p>
+<p>updated: $file_cabinet.updated.cz<p>
 
 
 
 <table>
-#for $entry in $entries
+#for $file in $file_cabinet.files
 <tr>
-<td><a href="$entry.title.text">$entry.title.text</a></td>
-<td>$entry.summary.text</td>
-<td>$entry.author[0].name.text</TD>
-<td><a href="mailto:$entry.author[0].email.text">$entry.author[0].email.text</a></td>
+<td><a href="$file.name">$file.name</a></td>
+<td>$file.summary</td>
+<td>$file.author.name</td>
+<td><a href="mailto:$file.author.email">$file.author.email</a></td>
+<td>$file.updated.en</td>
+<td>$file.revision</td>
 </tr>
 #end for
 </table>
