@@ -12,7 +12,7 @@ import re
 import string
 import os
 
-
+from tmpl_objects.objects import FileCabinet
 
 TEMPLATE_PATH = 'templates/'
 OUTPUT_PATH = 'output/'
@@ -227,15 +227,26 @@ class SiteController():
 
     def save_file_cabinet(self, path, entry):
         template_out = self.get_template(TMPL_FILE_CABINET)
-        template_out.title = entry.title.text
-        template_out.revision = entry.revision.text
-        template_out.updated = entry.updated.text
+
+        #template_out.title = entry.title.text
+        #template_out.revision = entry.revision.text
+        #template_out.updated = entry.updated.text
+        fc_object = FileCabinet()
+        fc_object.revision = entry.revision.text
+        fc_object.set_date(entry.updated.text)
+        fc_object.titel = entry.title.text
 
         feed = self.client.GetContentFeed(uri=entry.feed_link.href)
-        entries = feed.entry
-        template_out.entries = entries
-        for sub_entry in entries:
+        for sub_entry in feed.entry:
             self.save_attachment(entry=sub_entry, path=path)
+            fc_object.add_file(author_name=sub_entry.author[0].name.text,
+                                author_email=sub_entry.author[0].email.text,
+                                name=sub_entry.title.text,
+                                summary=sub_entry.summary.text,
+                                updated=sub_entry.updated.text,
+                                revision=sub_entry.revision.text)
+
+        template_out.file_cabinet=fc_object
         self.save_as_file(content=str(template_out), path=path + PAGE_NAME)
 
 
@@ -340,8 +351,8 @@ class SiteController():
 
 def main():
 
-    siteController = SiteController(site='gsmirrortest2', template = 'my_template.py')
-    siteController.save_site('site')
+    siteController = SiteController(site='gsmirrortest', template = None, )
+    siteController.save_site('site16')
 
 
 
