@@ -6,24 +6,8 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
 <body>
-
-
-<table width="100%" height="100%" cellspacing="0" cellpadding="0"><tr>
-
-  <td valign="top" width="100">
-	NAVIGACE  
-	<table>
-	#for $child in $site.childs
-	<tr>
-  <td>
-	<a href="$child.get_alternative_path_to($page)">$child.title</a>	
-  </td>
-  </tr>	
-	#end for
-</table>
-  </td>
-<td>
 <div>
+
 #for $predecessor in $page.get_predecessors()
 <a href="$predecessor.get_alternative_path_to($page)">$predecessor.title</a> -> 
 #end for
@@ -32,7 +16,18 @@ $page.title
 <div>
 $page.content
 </div>
+<br/>
 
+<div>
+
+#for $announcement in $page.get_announcements()
+<h3><a href="$announcement.subpage_path">$announcement.title</a></h3>
+<p>
+$announcement.embedded_content
+</p>
+#end for
+
+</div>
 
 <div>
 <hr/>
@@ -77,8 +72,5 @@ $attachment.author.name, $attachment.author.email, $attachment.updated.en, revis
 </tr>
 #end for
 </div>
-</td>
-</tr>
-</table>
 </body>
 </html>
