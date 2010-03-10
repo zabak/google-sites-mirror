@@ -18,6 +18,7 @@ from objects import Page
 from objects import ListPage
 from objects import ListItem
 
+from xml_module import ETagDocument
 
 
 
@@ -30,10 +31,11 @@ TMPL_FILE_CABINET = TEMPLATE_PATH + 'file_cabinet_template.py'
 TMPL_ANNOUNCEMENTS_PAGE = TEMPLATE_PATH + 'announcements_page_template.py'
 TMPL_ANNOUNCEMENT = TEMPLATE_PATH + 'announcement_template.py'
 TMPL_LISTPAGE = TEMPLATE_PATH + 'listpage_template.py'
-TMPL_DEFAULT_WEBPAGE = TEMPLATE_PATH + 'default_template.py'
+TMPL_DEFAULT_WEBPAGE = TEMPLATE_PATH + 'my_template2.py'
 
 PAGE_NAME = 'index.html'
 
+ETAGS_DOC = 'etags.xml'
 
 #------------possible kinds of content entries------------------------
 ANNOUNCEMENT = 'announcement'
@@ -68,6 +70,8 @@ class SiteController():
         if password:
             self.client.client_login(email=email, password=password, source=source)
 
+        self.etag_new = ETagDocument()
+        self.etag_old = ETagDocument()
 
     def get_template(self, template_path):
         file_template = open(template_path, 'r')
@@ -149,14 +153,30 @@ class SiteController():
 
     def save_site_to_disk(self, site, path, directory):
         path_to_site = path + directory + '/'
-        os.mkdir(path_to_site)
+
+        self.etag_old.get_document(path_to_site + ETAGS_DOC)
+        self.etag_new.create('site_etagsss')
+        if os.access(path_to_site, os.F_OK) is False:
+            os.mkdir(path_to_site)
         for child in site.childs:
             self.save_page_to_disk(page=child, path=path_to_site, site=site)
+        self.save_as_file(content=self.etag_new.to_string(), path=path_to_site + ETAGS_DOC)
+        self.remove_unused(attachments=self.etag_old.get_deleted_attachments())
 
+
+    def remove_unused(self, attachments):
+        for attachment in attachments:
+            print attachment[1]
+            os.remove(attachment[1])
 
     def save_page_to_disk(self, page, path, site):
         full_path = path + page.path
-        os.mkdir(full_path)
+        if os.access(full_path, os.F_OK) is False:
+            os.mkdir(full_path)
+
+        self.etag_new.add_element(id=page.id,
+                source=full_path, etag=page.etag, type=self.etag_new.PAGE)
+
 
         if page.kind == WEBPAGE:
             template_out = self.get_template(TMPL_DEFAULT_WEBPAGE)
@@ -185,12 +205,17 @@ class SiteController():
     def save_attachment_to_file(self, attachment, path):
         uri = '%s%s' % (self.client.MakeContentFeedUri(), attachment.id)
         att_entry = self.client.GetEntry(uri, desired_class=gdata.sites.data.ContentEntry)
-        self.client.DownloadAttachment(att_entry, path + attachment.name)
+        
+        self.etag_new.add_element(id=attachment.id,
+                source=path + attachment.name, etag=attachment.etag, type=self.etag_new.ATTACHMENT)
+
+        if self.etag_old.check_attachment(attachment.id, attachment.etag):
+            self.client.DownloadAttachment(att_entry, path + attachment.name)
 
 
     def get_site(self):
         site = Site()
-
+        print 'downloading site'
         for kind in PAGE_TYPES:
             uri = '%s?kind=%s' % (self.client.MakeContentFeedUri(), kind)
             feed = self.client.GetContentFeed(uri=uri)
@@ -201,6 +226,7 @@ class SiteController():
 
 
     def get_site_content(self, level=1, parent=None):
+        print 'downloading ocontent: ' + parent.pagename
         uri = '%s?parent=%s' % (self.client.MakeContentFeedUri(), parent.id)
         feed = self.client.GetContentFeed(uri=uri)
         for entry in feed.entry:
@@ -220,6 +246,7 @@ class SiteController():
 
 
     def get_page(self, entry, level, parent):
+        print 'downloading page: ' + entry.page_name.text
         page = Page(id=entry.GetNodeId(),
                     kind=entry.Kind(),
                     title=entry.title.text,
@@ -228,7 +255,8 @@ class SiteController():
                     updated=entry.updated.text,
                     revision=entry.revision.text,
                     pagename=entry.page_name.text,
-                    parent=parent)
+                    parent=parent,
+                    etag=entry.etag)
 
         if page.kind == LIST_PAGE:
             list_page = ListPage()
@@ -268,7 +296,9 @@ class SiteController():
 
 
     def get_attachment(self, entry, parent):
+        print 'downloading attachment: ' + entry.title.text
         parent.add_attachment(id=entry.GetNodeId(),
+                                etag=entry.etag,
                                 author_name=entry.author[0].name.text,
                                 author_email=entry.author[0].email.text,
                                 name=entry.title.text,
@@ -332,19 +362,20 @@ class SiteController():
 
 
 def main():
-    pass
-    #site = None
-    #domain = None
-    #source = None
-    #template = None
-    #email = None
-    #password = None
+    #pass
+    site = None
+    domain = None
+    source = None
+    template = None
+    email = None
+    password = None
 
-    #path = None
-    #directory = None
+    path = None
+    directory = None
 
     #siteController = SiteController(site=site, domain=domain, template = None,
     #                               source=source, email=email, password=password)
+
     #siteController.show_sites_content()
     #site = siteController.get_site()
     #siteController.save_site_to_disk(site, path, directory)

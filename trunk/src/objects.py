@@ -48,8 +48,8 @@ class Parent():
 
 
 class Attachmentable():
-    def add_attachment(self, id, author_name, author_email, name, summary, updated, revision):
-        self.attachments.append(Attachment(id, author_name, author_email, name, summary, updated, revision))
+    def add_attachment(self, id, etag, author_name, author_email, name, summary, updated, revision):
+        self.attachments.append(Attachment(id, author_name, author_email, name, summary, updated, revision, etag=etag))
     def add_web_attachment(self, id, author_name, author_email, name, summary, updated, revision, web_src):
         self.web_attachments.append(Attachment(id, author_name, author_email, name, summary, updated, revision, web_src))
 
@@ -69,8 +69,9 @@ class Site(Parent, Attachmentable):
 class Page(CollectiveObject, Commentable, Parent, Attachmentable):
     def __init__(self, id, title, pagename, kind, author_name, author_email,
                     updated, revision, parent, content=None,
-                    embedded_content=None):
+                    embedded_content=None, etag=None):
         self.id = id
+        self.etag = etag
         self.kind = kind
         self.set_author(author_name, author_email)
         self.set_date_and_revision(updated, revision)
@@ -127,8 +128,9 @@ class Comment(CollectiveObject):
 
 
 class Attachment(CollectiveObject):
-    def __init__(self, id, author_name, author_email, name, summary, updated, revision, web_src=None):
+    def __init__(self, id, author_name, author_email, name, summary, updated, revision, web_src=None, etag=None):
         self.id = id
+        self.etag = etag
         self.set_author(author_name, author_email)
         self.summary = summary
         self.name = name
