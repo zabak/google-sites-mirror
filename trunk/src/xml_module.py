@@ -4,6 +4,7 @@ __author__="hanis"
 
 from xml.dom import minidom
 
+import time
 
 
 class ETagDocument():
@@ -18,16 +19,20 @@ class ETagDocument():
         self.attachment_map = {}
         self.page_map = {}
 
-    def create(self, site_etag):
+    def create(self):
         self.document = minidom.Document()
-        site_element = self.document.createElement('site')
-        site_element.setAttribute('etag', site_etag)
+        site_element = self.document.createElement('site')        
         self.document.appendChild(site_element)
 
         attachments_element = self.document.createElement('attachments')
         pages_element = self.document.createElement('pages')
         site_element.appendChild(attachments_element)
         site_element.appendChild(pages_element)
+
+
+    def set_modification_time(self, time):
+        self.document.getElementsByTagName('site')[0].setAttribute('updated', time)
+
 
 
     def check_attachment(self, id, etag):
@@ -66,6 +71,9 @@ class ETagDocument():
         self.document.getElementsByTagName.firstChild.appendChild(att_element)
 
 
+    def get_modification_time(self):
+        return self.document.getElementsByTagName('site')[0].getAttribute('updated')
+
     def get_document(self, path):
         self.document = minidom.parse(path)
 
@@ -82,3 +90,4 @@ class ETagDocument():
 
 if __name__ == "__main__":
     pass
+    

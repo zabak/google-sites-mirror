@@ -10,6 +10,8 @@ import gdata.gauth
 
 import atom
 
+import time
+
 import re
 import os
 
@@ -17,9 +19,13 @@ from objects import Site
 from objects import Page
 from objects import ListPage
 from objects import ListItem
+from objects import Date
 
 from xml_module import ETagDocument
 
+
+
+FEED_FETCH_STEP = 300
 
 
 TEMPLATE_PATH = 'templates/'
@@ -71,7 +77,27 @@ class SiteController():
             self.client.client_login(email=email, password=password, source=source)
 
         self.etag_new = ETagDocument()
-        self.etag_old = ETagDocument()
+        self.etag_old = None
+
+
+    def process_modification_doc(self, path, directory):
+        path_to_etags = path + directory + '/' + ETAGS_DOC
+        if os.access(path_to_etags, os.F_OK):
+            self.etag_old = ETagDocument()
+            self.etag_old.get_document(path_to_etags)
+        self.etag_new.create()
+
+
+    def modified_since_lasttime(self):
+        uri = '%s?max-results=%s' % (self.client.MakeActivityFeedUri(), 1)
+        feed = self.client.GetActivityFeed(uri=uri)
+        updated = Date(feed.entry[0].updated.text).get_unix_time()
+        last_mirroring = self.etag_old.get_modification_time()
+        print 'updated: ' + str(float(updated))
+        print 'last_mirroring: ' + str(float(last_mirroring))
+        return float(updated) > float(last_mirroring)
+
+
 
     def get_template(self, template_path):
         file_template = open(template_path, 'r')
@@ -153,15 +179,14 @@ class SiteController():
 
     def save_site_to_disk(self, site, path, directory):
         path_to_site = path + directory + '/'
-
-        self.etag_old.get_document(path_to_site + ETAGS_DOC)
-        self.etag_new.create('site_etagsss')
         if os.access(path_to_site, os.F_OK) is False:
             os.mkdir(path_to_site)
         for child in site.childs:
             self.save_page_to_disk(page=child, path=path_to_site, site=site)
+        self.etag_new.set_modification_time(str(time.time()))
         self.save_as_file(content=self.etag_new.to_string(), path=path_to_site + ETAGS_DOC)
-        self.remove_unused(attachments=self.etag_old.get_deleted_attachments())
+        if self.etag_old:
+            self.remove_unused(attachments=self.etag_old.get_deleted_attachments())
 
 
     def remove_unused(self, attachments):
@@ -209,40 +234,46 @@ class SiteController():
         self.etag_new.add_element(id=attachment.id,
                 source=path + attachment.name, etag=attachment.etag, type=self.etag_new.ATTACHMENT)
 
-        if self.etag_old.check_attachment(attachment.id, attachment.etag):
+        if self.etag_old and self.etag_old.check_attachment(attachment.id, attachment.etag):
             self.client.DownloadAttachment(att_entry, path + attachment.name)
 
 
     def get_site(self):
         site = Site()
-        print 'downloading site'
-        for kind in PAGE_TYPES:
-            uri = '%s?kind=%s' % (self.client.MakeContentFeedUri(), kind)
+        print 'downloading sit'
+        step = 0
+        while True:
+            uri = '%s?start-index=%s&max-results=%s' % (self.client.MakeContentFeedUri(), step*FEED_FETCH_STEP + 1, (FEED_FETCH_STEP - 1))
             feed = self.client.GetContentFeed(uri=uri)
+            step+=1
+            if not feed.entry: break
             for entry in feed.entry:
-                if entry.FindParentLink() is None:
+                if entry.FindParentLink() is None and entry.Kind() in PAGE_TYPES:
                     self.get_page(entry, level=1, parent=site)
         return site
 
 
     def get_site_content(self, level=1, parent=None):
         print 'downloading ocontent: ' + parent.pagename
-        uri = '%s?parent=%s' % (self.client.MakeContentFeedUri(), parent.id)
-        feed = self.client.GetContentFeed(uri=uri)
-        for entry in feed.entry:
-            kind = entry.Kind()
-            if kind in PAGE_TYPES:
-                self.get_page(entry, level, parent)
-            if kind == ATTACHMENT:
-                self.get_attachment(entry, parent=parent)
-            elif kind == COMMENT:
-                self.get_comment(entry, parent)
-            elif kind == LIST_ITEM:
-                self.get_list_item(entry, parent)
-            elif kind == WEB_ATTACHMENT:
-                self.get_web_attachment(entry, parent)
-
-
+        step = 0
+        while True:
+            uri = '%s?parent=%s&start-index=%s&max-results=%s' % (self.client.MakeContentFeedUri(),
+                        parent.id, step*FEED_FETCH_STEP + 1, (FEED_FETCH_STEP - 1))
+            feed = self.client.GetContentFeed(uri=uri)
+            step+=1
+            if not feed.entry: break
+            for entry in feed.entry:
+                kind = entry.Kind()
+                if kind in PAGE_TYPES:
+                    self.get_page(entry, level, parent)
+                if kind == ATTACHMENT:
+                    self.get_attachment(entry, parent=parent)
+                elif kind == COMMENT:
+                    self.get_comment(entry, parent)
+                elif kind == LIST_ITEM:
+                    self.get_list_item(entry, parent)
+                elif kind == WEB_ATTACHMENT:
+                    self.get_web_attachment(entry, parent)
 
 
     def get_page(self, entry, level, parent):
@@ -327,58 +358,73 @@ class SiteController():
 
 
 
-    def show_sites_content(self):  
-        feed = self.client.GetContentFeed()        
-        for entry in feed.entry:
+    def show_sites_content(self):
+        pass
+        #YD0peyA
+
+        #uri = '%s?max-results=%s' % (self.client.MakeActivityFeedUri(), 10)#FEED_FETCH_STEP)
+
+        #feed = self.client.GetActivityFeed(uri=uri)
+
+        #for entry in feed.entry:
+        #      print '%s [%s on %s]' % (entry.title, entry.Kind(), entry.updated.text)
+        #response = self.client.request(method='GET', uri=self.client.MakeContentFeedUri())
+        #print str(response.read())
+
+        #for entry in feed.entry:
             #uri = '%s%s' % (self.client.make_content_feed_uri(), entry2.GetNodeId())
             #entry = self.client.GetEntry(self.client.make_content_feed_uri(), desired_class=gdata.sites.data.ContentEntry, etag='"YD0peyA."')
             #print 'etag: ' + entry.etag
             #print 'title: ' + entry.title.text
-            print 'kind: ' + entry.Kind()
+        #    print 'kind: ' + entry.Kind()
             #print 'summary' + entry.summary.text
-            print 'id: ' + entry.GetNodeId()
-            print 'revision: ' + entry.revision.text
-            print 'updated: ' + entry.updated.text
-            print 'published: ' + entry.published.text            
-            if entry.page_name:
-                print 'page name: ' + entry.page_name.text
+        #    print 'id: ' + entry.GetNodeId()
+            #print 'revision: ' + entry.revision.text
+            #print 'updated: ' + entry.updated.text
+            #print 'published: ' + entry.published.text
+        #    if entry.page_name:
+        #        print 'page name: ' + entry.page_name.text
 
-            if entry.content:
-                print 'content: ' + str(entry.content.src)
+            #if entry.content:
+            #    print 'content: ' + str(entry.content.src)
                 #print '--------'
                 #print 'all content (get request): ' + self.request_page_all(entry.GetNodeId())
                 #print '--------'
-            
-            parent_link = entry.FindParentLink()
-            if parent_link:
-                    print 'parent link: ' + parent_link
 
-            if entry.GetAlternateLink():
-                print 'link at Sites: ' + entry.GetAlternateLink().href
+            #parent_link = entry.FindParentLink()
+            #if parent_link:
+            #        print 'parent link: ' + parent_link
 
-            if entry.feed_link:
-                print 'feed of childs: ' + entry.feed_link.href
-            print '---------------------------------------------------'
+            #if entry.GetAlternateLink():
+            #    print 'link at Sites: ' + entry.GetAlternateLink().href
+
+            #if entry.feed_link:
+            #    print 'feed of childs: ' + entry.feed_link.href
+            #print '---------------------------------------------------'
+
+
 
 
 def main():
     #pass
-    site = None
+    site = 'gsmirrortest'
     domain = None
     source = None
     template = None
     email = None
     password = None
 
-    path = None
-    directory = None
+    path = '/home/hanis/output/'
+    directory = 'ooo'
 
-    #siteController = SiteController(site=site, domain=domain, template = None,
-    #                               source=source, email=email, password=password)
+    siteController = SiteController(site=site, domain=domain, template = None,
+                                   source=source, email=email, password=password)
 
     #siteController.show_sites_content()
-    #site = siteController.get_site()
-    #siteController.save_site_to_disk(site, path, directory)
+    siteController.process_modification_doc(path, directory)
+    if siteController.modified_since_lasttime():
+        site = siteController.get_site()
+        siteController.save_site_to_disk(site, path, directory)
 
 if __name__ == "__main__":
     main()

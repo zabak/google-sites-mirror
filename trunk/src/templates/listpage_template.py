@@ -32,7 +32,7 @@ $page.content
 <td>$cell</td>
 #end for
 <td>$item.author.name</td>
-<td>$item.updated.cz</td>
+<td>$item.updated.format()</td>
 <td>$item.revision</td>
 </tr>
 #end for
@@ -56,7 +56,7 @@ $page.content
 #for $comment in $page.comments
 <tr>
 <td>
-$comment.author.name, $comment.author.email, $comment.updated.en, revision: $comment.revision
+$comment.author.name, $comment.author.email, $comment.updated.format(), revision: $comment.revision
 <p>
 $comment.text
 </p>
@@ -66,7 +66,7 @@ $comment.text
 </table>
 <hr/>
 author: $page.author.name, $page.author.email<br/>
-updated: $page.updated.cz<br/>
+updated: $page.updated.format()<br/>
 revision: $page.revision
 </div>
 <div>
@@ -76,7 +76,7 @@ revision: $page.revision
 #for $attachment in $page.attachments
 <tr>
 <td>
-$attachment.author.name, $attachment.author.email, $attachment.updated.en, revision: $attachment.revision
+$attachment.author.name, $attachment.author.email, $attachment.updated.format(), revision: $attachment.revision
 <p>
 <a href="$attachment.link">$attachment.name</a>
 </p>

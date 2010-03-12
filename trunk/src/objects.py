@@ -1,6 +1,11 @@
 
 __author__="hanis"
 
+
+
+import time
+import calendar
+
 CZ = 'cz'
 EN = 'en'
 
@@ -161,43 +166,59 @@ class ListItem(CollectiveObject):
 
 class Date():
 
-    months={'1':'Jan', '2':'Feb', '3':'Mar', '4':'Apr', '5':'May',
-            '6':'Jun', '7':'Jul', '8':'Aug', '9':'Sep', '10':'Oct',
-            '11':'Nov', '12':'Dec'}
+#    months={'1':'Jan', '2':'Feb', '3':'Mar', '4':'Apr', '5':'May',
+#            '6':'Jun', '7':'Jul', '8':'Aug', '9':'Sep', '10':'Oct',
+#            '11':'Nov', '12':'Dec'}
 
 
-    def __init__(self, date_string):
-        self.cz=self.parse_date(date_string, CZ)
-        self.en=self.parse_date(date_string, EN)
+    def __init__(self, date_string=None, unix_time=None):
+        if date_string:
+            temp = date_string[0:date_string.find('.')]
+            self.date = time.strptime(temp, '%Y-%m-%dT%H:%M:%S')
+        elif unix_time:
+            self.date = time.gmtime(unix_time)
 
 
-    def parse_date(self, date_string, format):
-        date = date_string[0:10].split('-')
-        time = date_string[11:19].split(':')
-        year=date[0]
-        month=date[1]
-        if month[0] == '0':
-            month=month[1:]
-        day=date[2]
-        if day[0] == '0':
-            day=day[1:]
+    def get_unix_time(self):
+        return calendar.timegm(self.date)
 
-        hours=time[0]
-        minutes=time[1]
-        if format==EN:
-            period = 'AM'
-            hour_num = int(hours)
-            if hour_num > 11:
-                hour_num = hour_num - 12
-                hours = str(hour_num)
-                period ='PM'
-            return '%s %s, %s %s:%s %s' % (self.months[month], day, year, hours, minutes, period)
-        elif format==CZ:
-            return '%s. %s. %s %s:%s' % (day, month, year, hours, minutes)
+
+    def format(self, format=None):
+        if format is None:
+            format = '%B %d, %Y, %I:%M %p'
+        return time.strftime(format, self.date)
+
+
+
+    def get_current_unix_time(self):
+        return time.time()
+
+
+
+#    def parse_date(self, date_string, format):
+#        date = date_string[0:10].split('-')
+#        time = date_string[11:19].split(':')
+#        year=dadate_stringte[0]
+#        month=date[1]
+#        if month[0] == '0':
+#            month=month[1:]
+#        day=date[2]
+#        if day[0] == '0':
+#            day=day[1:]
+#
+#        hours=time[0]
+#        minutes=time[1]
+#        if format==EN:
+#            period = 'AM'
+#            hour_num = int(hours)
+#            if hour_num > 11:
+#                hour_num = hour_num - 12
+#                hours = str(hour_num)
+#                period ='PM'
+#            return '%s %s, %s %s:%s %s' % (self.months[month], day, year, hours, minutes, period)
+#        elif format==CZ:
+#            return '%s. %s. %s %s:%s' % (day, month, year, hours, minutes)
 
 
 if __name__ == "__main__":
-    date = Date('2010-07-16T19:20:30.45+01:00')
-    print date.cz
-    print date.en
-
+    pass

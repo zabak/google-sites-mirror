@@ -28,7 +28,7 @@ $page.content
 <td>$file.summary</td>
 <td>$file.author.name</td>
 <td><a href="mailto:$file.author.email">$file.author.email</a></td>
-<td>$file.updated.en</td>
+<td>$file.updated.format()</td>
 <td>$file.revision</td>
 </tr>
 #end for
@@ -39,7 +39,7 @@ $page.content
 <td>$file.summary</td>
 <td>$file.author.name</td>
 <td><a href="mailto:$file.author.email">$file.author.email</a></td>
-<td>$file.updated.en</td>
+<td>$file.updated.format()</td>
 <td>$file.revision</td>
 </tr>
 #end for
@@ -65,7 +65,7 @@ $page.content
 #for $comment in $page.comments
 <tr>
 <td>
-$comment.author.name, $comment.author.email, $comment.updated.en, revision: $comment.revision
+$comment.author.name, $comment.author.email, $comment.updated.format(), revision: $comment.revision
 <p>
 $comment.text
 </p>
@@ -80,7 +80,7 @@ $comment.text
 <hr/>
 <div>
 author: $page.author.name, $page.author.email<br/>
-updated: $page.updated.cz<br/>
+updated: $page.updated.format()<br/>
 revision: $page.revision
 </div>
 
