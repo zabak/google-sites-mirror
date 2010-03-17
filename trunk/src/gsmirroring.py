@@ -1,14 +1,12 @@
 #! /usr/bin/python
 
 
-__author__="hanis"
+__author__="hanis (Jan Rychtar)"
 
 
 import getopt
 import sys
 
-import xml.dom.minidom
-from xml.dom.minidom import parse
 
 from gs_module import SiteController
 
@@ -17,7 +15,7 @@ def main():
 
     try:
         opts, args = getopt.getopt(sys.argv[1:], None, ['site=', 'domain=',
-                    'path=', 'template=', 'email=', 'password=', 'directory='])
+                    'path=', 'directory='])
 
     except getopt.error, msg:
         print "wrong input"
@@ -26,10 +24,7 @@ def main():
     site = None
     domain = None
     path = None
-    template = None
-    password = None
     directory = None
-    email = None
 
     for option, arg in opts:
         if option == '--site':
@@ -38,20 +33,17 @@ def main():
             domain = arg
         elif option == '--path':
             path = arg
-        elif option == '--template':
-            template = arg
-        elif option == '--password':
-            password = arg
         elif option == '--directory':
             directory = arg
-        elif option == '--email':
-            email = arg
 
 
-    siteController = SiteController(site=site, domain=domain, template=template,
-                                    email=email, password=password)
-    siteController.save_site_to_disk(siteController.get_site(), path, directory)
 
+    siteController = SiteController(site=site, domain=domain)
+
+    siteController.process_modification_doc(path, directory)
+    if siteController.modified_since_lasttime():
+        site = siteController.get_site()
+        siteController.save_site_to_disk(site, path, directory)
 
 
 if __name__ == "__main__":

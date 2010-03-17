@@ -1,6 +1,5 @@
 
-
-__author__="hanis"
+__author__="hanis (Jan Rychtar)"
 
 
 from Cheetah.Template import Template
@@ -8,12 +7,11 @@ import gdata.sites.client
 import gdata.sites.data
 import gdata.gauth
 
-import atom
 
 import time
-
 import re
 import os
+import shutil
 
 from objects import Site
 from objects import Page
@@ -30,17 +28,16 @@ FEED_FETCH_STEP = 300
 
 TEMPLATE_PATH = 'templates/'
 OUTPUT_PATH = 'output/'
-PAGE_NAME = 'index.html'
 SOURCE_NAME = 'test-test-v1'
 
 TMPL_FILE_CABINET = TEMPLATE_PATH + 'file_cabinet_template.py'
 TMPL_ANNOUNCEMENTS_PAGE = TEMPLATE_PATH + 'announcements_page_template.py'
 TMPL_ANNOUNCEMENT = TEMPLATE_PATH + 'announcement_template.py'
 TMPL_LISTPAGE = TEMPLATE_PATH + 'listpage_template.py'
-TMPL_DEFAULT_WEBPAGE = TEMPLATE_PATH + 'my_template2.py'
+TMPL_DEFAULT_WEBPAGE = TEMPLATE_PATH + 'my_template4.py'
+
 
 PAGE_NAME = 'index.html'
-
 ETAGS_DOC = 'etags.xml'
 
 #------------possible kinds of content entries------------------------
@@ -89,13 +86,14 @@ class SiteController():
 
 
     def modified_since_lasttime(self):
-        uri = '%s?max-results=%s' % (self.client.MakeActivityFeedUri(), 1)
-        feed = self.client.GetActivityFeed(uri=uri)
-        updated = Date(feed.entry[0].updated.text).get_unix_time()
-        last_mirroring = self.etag_old.get_modification_time()
-        print 'updated: ' + str(float(updated))
-        print 'last_mirroring: ' + str(float(last_mirroring))
-        return float(updated) > float(last_mirroring)
+        if self.etag_old:
+            uri = '%s?max-results=%s' % (self.client.MakeActivityFeedUri(), 1)
+            feed = self.client.GetActivityFeed(uri=uri)
+            updated = Date(feed.entry[0].updated.text).get_unix_time()
+            last_mirroring = self.etag_old.get_modification_time()
+            return float(updated) > float(last_mirroring)
+        else:
+            return True
 
 
 
@@ -155,7 +153,7 @@ class SiteController():
         link_list = re.findall(r'<a href="'+ site_path +'.*?"', page)
         for link in link_list:
             relative_path = level * '../' + link[len(site_path)+9:-1]
-            new_link = '<a href="%s/index.html"' % (relative_path)
+            new_link = '<a href="%s/%s"' % (relative_path, PAGE_NAME)
             page = page.replace(link, new_link)
         return page
 
@@ -164,7 +162,6 @@ class SiteController():
     def replace_attachment_source(self, page, attachment, parent, as_announcement=None):
         site_path = self.get_site_path()
         current_src='%s_/rsrc/[^>]*/%s%s' % (site_path, parent.path, attachment.name)
-        #print current_src
         src_list = re.findall(r''+current_src, page)
         if as_announcement:
             new_src='./%s/%s' % (parent.pagename, attachment.name)
@@ -179,28 +176,37 @@ class SiteController():
 
     def save_site_to_disk(self, site, path, directory):
         path_to_site = path + directory + '/'
-        if os.access(path_to_site, os.F_OK) is False:
+
+        if self.etag_old:
+            self.remove_unused(attachments=self.etag_old.get_unused_attachments(), pages=self.etag_old.get_unused_pages(), path=path_to_site)
+
+        if not os.access(path_to_site, os.F_OK):
             os.mkdir(path_to_site)
         for child in site.childs:
             self.save_page_to_disk(page=child, path=path_to_site, site=site)
         self.etag_new.set_modification_time(str(time.time()))
         self.save_as_file(content=self.etag_new.to_string(), path=path_to_site + ETAGS_DOC)
-        if self.etag_old:
-            self.remove_unused(attachments=self.etag_old.get_deleted_attachments())
 
 
-    def remove_unused(self, attachments):
+    def remove_unused(self, attachments, pages, path):
         for attachment in attachments:
-            print attachment[1]
-            os.remove(attachment[1])
+            if os.access(attachment[1], os.F_OK):
+                print 'removing unused attachment: ' + attachment[1]
+                os.remove(attachment[1])
+        for page in pages:
+            abs_path = path + page[1]
+            if os.access(abs_path, os.F_OK):
+                print 'removing unused page: ' + abs_path
+                shutil.rmtree(abs_path)
 
     def save_page_to_disk(self, page, path, site):
         full_path = path + page.path
-        if os.access(full_path, os.F_OK) is False:
+
+        if not os.access(full_path, os.F_OK):
             os.mkdir(full_path)
 
         self.etag_new.add_element(id=page.id,
-                source=full_path, etag=page.etag, type=self.etag_new.PAGE)
+                source=page.path, etag=page.etag, type=self.etag_new.PAGE)
 
 
         if page.kind == WEBPAGE:
@@ -233,14 +239,16 @@ class SiteController():
         
         self.etag_new.add_element(id=attachment.id,
                 source=path + attachment.name, etag=attachment.etag, type=self.etag_new.ATTACHMENT)
-
-        if self.etag_old and self.etag_old.check_attachment(attachment.id, attachment.etag):
+        if attachment.save:
+            print 'saving attachment: ' + path + attachment.name
             self.client.DownloadAttachment(att_entry, path + attachment.name)
+        else:
+            print 'omitting attachment: ' + path + attachment.name
 
 
     def get_site(self):
         site = Site()
-        print 'downloading sit'
+        print 'downloading site'
         step = 0
         while True:
             uri = '%s?start-index=%s&max-results=%s' % (self.client.MakeContentFeedUri(), step*FEED_FETCH_STEP + 1, (FEED_FETCH_STEP - 1))
@@ -289,6 +297,9 @@ class SiteController():
                     parent=parent,
                     etag=entry.etag)
 
+        if self.etag_old:
+            self.etag_old.check_page(page.id, page.path)
+
         if page.kind == LIST_PAGE:
             list_page = ListPage()
             for header in entry.data.column:
@@ -314,6 +325,7 @@ class SiteController():
 
 
     def get_list_item(self, entry, parent):
+        print 'downloading list item at: ' + parent.pagename
         item = ListItem(author_name=entry.author[0].name.text,
                         author_email=entry.author[0].email.text,
                         updated=entry.updated.text,
@@ -328,6 +340,10 @@ class SiteController():
 
     def get_attachment(self, entry, parent):
         print 'downloading attachment: ' + entry.title.text
+        if self.etag_old:
+            save = self.etag_old.check_attachment(id=entry.GetNodeId(), etag=entry.etag)
+        else:
+            save = True
         parent.add_attachment(id=entry.GetNodeId(),
                                 etag=entry.etag,
                                 author_name=entry.author[0].name.text,
@@ -335,9 +351,11 @@ class SiteController():
                                 name=entry.title.text,
                                 summary=entry.summary.text,
                                 updated=entry.updated.text,
-                                revision=entry.revision.text)
+                                revision=entry.revision.text,
+                                save = save)
 
     def get_web_attachment(self, entry, parent):
+        print 'downloading webattachment: ' + entry.title.text
         parent.add_web_attachment(id=entry.GetNodeId(),
                                 author_name=entry.author[0].name.text,
                                 author_email=entry.author[0].email.text,
@@ -350,6 +368,7 @@ class SiteController():
 
 
     def get_comment(self, entry, parent):
+        print 'downloading comment at: ' + parent.pagename
         parent.add_comment(text=self.parse_comment(self.request_page_content(entry.GetNodeId())),
                             author_name=entry.author[0].name.text,
                             author_email=entry.author[0].email.text,
@@ -360,67 +379,21 @@ class SiteController():
 
     def show_sites_content(self):
         pass
-        #YD0peyA
-
-        #uri = '%s?max-results=%s' % (self.client.MakeActivityFeedUri(), 10)#FEED_FETCH_STEP)
-
-        #feed = self.client.GetActivityFeed(uri=uri)
-
-        #for entry in feed.entry:
-        #      print '%s [%s on %s]' % (entry.title, entry.Kind(), entry.updated.text)
-        #response = self.client.request(method='GET', uri=self.client.MakeContentFeedUri())
-        #print str(response.read())
-
-        #for entry in feed.entry:
-            #uri = '%s%s' % (self.client.make_content_feed_uri(), entry2.GetNodeId())
-            #entry = self.client.GetEntry(self.client.make_content_feed_uri(), desired_class=gdata.sites.data.ContentEntry, etag='"YD0peyA."')
-            #print 'etag: ' + entry.etag
-            #print 'title: ' + entry.title.text
-        #    print 'kind: ' + entry.Kind()
-            #print 'summary' + entry.summary.text
-        #    print 'id: ' + entry.GetNodeId()
-            #print 'revision: ' + entry.revision.text
-            #print 'updated: ' + entry.updated.text
-            #print 'published: ' + entry.published.text
-        #    if entry.page_name:
-        #        print 'page name: ' + entry.page_name.text
-
-            #if entry.content:
-            #    print 'content: ' + str(entry.content.src)
-                #print '--------'
-                #print 'all content (get request): ' + self.request_page_all(entry.GetNodeId())
-                #print '--------'
-
-            #parent_link = entry.FindParentLink()
-            #if parent_link:
-            #        print 'parent link: ' + parent_link
-
-            #if entry.GetAlternateLink():
-            #    print 'link at Sites: ' + entry.GetAlternateLink().href
-
-            #if entry.feed_link:
-            #    print 'feed of childs: ' + entry.feed_link.href
-            #print '---------------------------------------------------'
-
-
 
 
 def main():
-    #pass
     site = 'gsmirrortest'
     domain = None
     source = None
-    template = None
     email = None
     password = None
 
     path = '/home/hanis/output/'
-    directory = 'ooo'
+    directory = 'skdshd'
 
     siteController = SiteController(site=site, domain=domain, template = None,
                                    source=source, email=email, password=password)
 
-    #siteController.show_sites_content()
     siteController.process_modification_doc(path, directory)
     if siteController.modified_since_lasttime():
         site = siteController.get_site()

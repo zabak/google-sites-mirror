@@ -1,26 +1,16 @@
 
-__author__="hanis"
-
+__author__="hanis (Jan Rychtar)"
 
 
 import time
 import calendar
 
+
+PAGE_NAME = 'index.html'
+
+
 CZ = 'cz'
 EN = 'en'
-
-
-#------------possible kinds of content entries------------------------
-ANNOUNCEMENT = 'announcement'
-ANNOUNCEMENTS_PAGE = 'announcementspage'
-ATTACHMENT = 'attachment'
-COMMENT = 'comment'
-FILE_CABINET = 'filecabinet'
-LIST_ITEM = 'listitem'
-LIST_PAGE = 'listpage'
-WEBPAGE = 'webpage'
-WEB_ATTACHMENT = 'webattachment'
-#---------------------------------------------------------------------
 
 
 
@@ -31,6 +21,9 @@ class Author():
 
 
 class CollectiveObject:
+    """
+    Represents attributes thet are common to all objects
+    """
     revision = None
     updated = None
     author = None
@@ -51,24 +44,22 @@ class Parent():
         self.childs.append(child)
 
 
-
 class Attachmentable():
-    def add_attachment(self, id, etag, author_name, author_email, name, summary, updated, revision):
-        self.attachments.append(Attachment(id, author_name, author_email, name, summary, updated, revision, etag=etag))
+    def add_attachment(self, id, etag, author_name, author_email, name, summary, updated, revision, save):
+        self.attachments.append(Attachment(id, author_name, author_email, name, summary, updated, revision, etag=etag, save=save))
     def add_web_attachment(self, id, author_name, author_email, name, summary, updated, revision, web_src):
         self.web_attachments.append(Attachment(id, author_name, author_email, name, summary, updated, revision, web_src))
 
 
-
-
 class Site(Parent, Attachmentable):
+    """
+    Represents the root object
+    """
     def __init__(self):
         self.childs = []
         self.attachments = []
         self.path=''
         self.path_to_root=''
-
-
 
 
 class Page(CollectiveObject, Commentable, Parent, Attachmentable):
@@ -89,7 +80,7 @@ class Page(CollectiveObject, Commentable, Parent, Attachmentable):
         self.web_attachments = [] #only for file cabinets
         self.parent = parent
         self.pagename = pagename
-        self.subpage_path = './' + self.pagename + '/index.html'
+        self.subpage_path = './' + self.pagename + '/' + PAGE_NAME
         self.path=self.parent.path + self.pagename + '/'
         self.path_to_root=parent.path_to_root + '../'
         self.list_items=None #only for list pages
@@ -112,14 +103,14 @@ class Page(CollectiveObject, Commentable, Parent, Attachmentable):
     def get_announcements(self):
         announcements = []
         for page in self.childs:
-            if page.kind == ANNOUNCEMENT:
+            if page.kind == 'announcement':
                 announcements.append(page)
         return announcements
 
 
 
     def get_alternative_path_to(self, page):
-        return page.path_to_root + self.path + 'index.html'
+        return page.path_to_root + self.path + PAGE_NAME
 
 
 
@@ -133,7 +124,7 @@ class Comment(CollectiveObject):
 
 
 class Attachment(CollectiveObject):
-    def __init__(self, id, author_name, author_email, name, summary, updated, revision, web_src=None, etag=None):
+    def __init__(self, id, author_name, author_email, name, summary, updated, revision, web_src=None, etag=None, save=False):
         self.id = id
         self.etag = etag
         self.set_author(author_name, author_email)
@@ -142,6 +133,7 @@ class Attachment(CollectiveObject):
         self.set_date_and_revision(updated, revision)
         self.link = './' + name
         self.web_src = web_src #only for web attachments
+        self.save = save
 
 
 class ListPage():
@@ -165,13 +157,22 @@ class ListItem(CollectiveObject):
 
 
 class Date():
-
-#    months={'1':'Jan', '2':'Feb', '3':'Mar', '4':'Apr', '5':'May',
-#            '6':'Jun', '7':'Jul', '8':'Aug', '9':'Sep', '10':'Oct',
-#            '11':'Nov', '12':'Dec'}
-
-
+    """
+    Google Sites API use the format ISO8601 for datetime of the form:
+    yyyy-mm-ddThh:mm:ss.mmmZ
+    Since such format isn't suitable for diplaying, this class allows
+    the script to choose an arbitrary format (set in a template) for displaying
+    datetime strings.
+    """
     def __init__(self, date_string=None, unix_time=None):
+        """
+        Exactly one argument is admissible. 
+        
+        Args:
+            date_string: String of the form "yyyy-mm-ddThh:mm:ss.mmmZ" (ISO8601).            
+            unix_time: Number of seconds since the Unix Epoch 
+                (January 1 1970 00:00:00 GMT)                    
+        """
         if date_string:
             temp = date_string[0:date_string.find('.')]
             self.date = time.strptime(temp, '%Y-%m-%dT%H:%M:%S')
@@ -183,41 +184,23 @@ class Date():
         return calendar.timegm(self.date)
 
 
+
     def format(self, format=None):
+        """            
+            Args:
+                format: String specifying the format of a datetime, where
+                    String consists of directives (see python time module) and 
+                    other additional letters.
+            Returns: String representing a datetime of a form specified in 
+            format argument
+        """
         if format is None:
             format = '%B %d, %Y, %I:%M %p'
         return time.strftime(format, self.date)
 
 
-
     def get_current_unix_time(self):
         return time.time()
-
-
-
-#    def parse_date(self, date_string, format):
-#        date = date_string[0:10].split('-')
-#        time = date_string[11:19].split(':')
-#        year=dadate_stringte[0]
-#        month=date[1]
-#        if month[0] == '0':
-#            month=month[1:]
-#        day=date[2]
-#        if day[0] == '0':
-#            day=day[1:]
-#
-#        hours=time[0]
-#        minutes=time[1]
-#        if format==EN:
-#            period = 'AM'
-#            hour_num = int(hours)
-#            if hour_num > 11:
-#                hour_num = hour_num - 12
-#                hours = str(hour_num)
-#                period ='PM'
-#            return '%s %s, %s %s:%s %s' % (self.months[month], day, year, hours, minutes, period)
-#        elif format==CZ:
-#            return '%s. %s. %s %s:%s' % (day, month, year, hours, minutes)
 
 
 if __name__ == "__main__":

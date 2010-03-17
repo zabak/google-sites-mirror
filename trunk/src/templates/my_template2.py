@@ -326,11 +326,11 @@
   a:link {
      	color: #f6952e;
   }
- /* 
-  a:hover {
+
+  a[href]:hover {
   	background-color: #dbd4a6;
   }
-*/
+
   /* sidebar
   ----------------------------------------------- */
   #sidebar, #sidebar-alternate {
