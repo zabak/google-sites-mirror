@@ -26,9 +26,9 @@ from xml_module import ETagDocument
 
 FEED_FETCH_STEP = 300
 
-SOURCE = None#'hanis-gsmirror-v1'
+SOURCE = 'hanis-gsmirror-v1'
 
-DEFAULT_TEMPLATES = './default_templates/'
+DEFAULT_TEMPLATES = './templates/default_templates/'
 
 TMPL_FILE_CABINET = 'file_cabinet_template.tmpl'
 TMPL_ANNOUNCEMENTS_PAGE = 'announcements_page_template.tmpl'
