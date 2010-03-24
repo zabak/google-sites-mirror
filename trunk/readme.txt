@@ -77,7 +77,7 @@ where possible options are:
             http://sites.google.com/a/staremapy.cz/www/
             Use templates from ./staremapy_templates/
 
-        python gsmirror.py -s gsmirrortest
+        python gsmirror.py -s gsmirrortest -l
             Creates a root directory 'gsmirrortest' at the current working
             directory and into this directory export a site
             http://sites.google.com/site/gsmirrortest/
