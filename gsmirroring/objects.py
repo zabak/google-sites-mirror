@@ -47,7 +47,7 @@ class Commentable():
 class Parent():
     """
     Classes that represents entities which may store subpages
-    (eg. subpages) inherit a method for adding subpages from this class.
+    (e.g. webpages) inherit a method for adding subpages from this class.
     """
     def add_child(self, child):
         self.childs.append(child)
@@ -75,6 +75,19 @@ class Site(Parent, Attachmentable):
         self.attachments = []
         self.path=''
         self.path_to_root=''
+        self.leading_page_id = 0
+
+    def get_leading_page(self):
+        for child in self.childs:
+            if child.id == self.leading_page_id:
+                return child
+
+    def get_non_leading_pages(self):
+        childs = []
+        for child in self.childs:
+            if child.id != self.leading_page_id:
+                childs.append(child)
+        return childs
 
 
 
@@ -104,7 +117,6 @@ class Page(CollectiveObject, Commentable, Parent, Attachmentable):
         self.path=self.parent.path + self.pagename + '/'
         self.path_to_root=parent.path_to_root + '../'
         self.list_items=None #only for list pages
-
 
 
     def get_predecessors(self):
