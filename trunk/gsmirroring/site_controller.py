@@ -302,6 +302,13 @@ class SiteController():
             print 'omitting attachment: ' + path + attachment.name
 
 
+    def get_leading_page_id(self):
+        uri = '%s?path=/' % (self.client.MakeContentFeedUri())
+        feed = self.client.GetContentFeed(uri=uri)
+        return feed.entry[0].GetNodeId()
+
+
+
     def get_site(self):
         """
         This method downloads all the current site content (except of
@@ -312,6 +319,7 @@ class SiteController():
         site = Site()
         if self.progression:
             print 'downloading site'
+        site.leading_page_id = self.get_leading_page_id()
         step = 0
         while True:
             uri = '%s?start-index=%s&max-results=%s' % (self.client.MakeContentFeedUri(), step*FEED_FETCH_STEP + 1, (FEED_FETCH_STEP - 1))
