@@ -18,6 +18,7 @@ from objects import Page
 from objects import ListPage
 from objects import ListItem
 from objects import Date
+from objects import LandingPage
 
 
 from xml_module import ETagDocument
@@ -92,7 +93,7 @@ class SiteController():
 
         self.etag_new = ETagDocument()
         self.etag_old = None
-
+        self.landing_page = None
 
 
 
@@ -176,6 +177,13 @@ class SiteController():
             path = 'http://sites.google.com/a/%s/%s/' % (self.client.domain, self.client.site)
         return path
 
+    def get_site_short_path(self):
+        if self.client.domain == 'site':
+            path = '/site/%s/' % (self.client.site)
+        else:
+            path = '/%s/%s/' % (self.client.domain, self.client.site)
+        return path
+
 
 
     def parse_comment(self, comment):
@@ -184,26 +192,57 @@ class SiteController():
 
 
 
-    def replace_paths(self, page, level):
+    def replace_paths(self, page_content, level, page):
         site_path = self.get_site_path()
-        link_list = re.findall(r'<a href="'+ site_path +'.*?"', page)
+        link_list = re.findall(r'<a href="'+ site_path +'.*?"', page_content)
+        if self.landing_page.id == page.id:
+            level = 0
         for link in link_list:
-            relative_path = level * '../' + link[len(site_path)+9:-1]
-            new_link = '<a href="%s/%s"' % (relative_path, PAGE_NAME)
-            page = page.replace(link, new_link)
-        return page
+            att_test = link.find('?attredirects')            
+            if att_test == -1:
+                if link.endswith(self.landing_page.path, 0, -1):
+                    relative_path = level * '../'
+                    new_link = '<a href="%s%s"' % (relative_path, PAGE_NAME)
+                else:
+                    relative_path = level * '../' + link[len(site_path)+9:-1]
+                    new_link = '<a href="%s/%s"' % (relative_path, PAGE_NAME)
+            else:
+                relative_path = level * '../' + link[len(site_path)+9:att_test]
+                new_link = '<a href="%s"' % (relative_path)
+            page_content = page_content.replace(link, new_link)
+
+        #in one particular case there are links that don't start with htttp://sites/google ??!!
+        #so this is considered as a temporary patch
+        site_short_path = self.get_site_short_path()
+        link_list = re.findall(r'<a href="'+ site_short_path +'.*?"', page_content)
+        if self.landing_page.id == page.id:
+            level = 0
+        for link in link_list:
+            att_test = link.find('?attredirects')
+            if att_test == -1:
+                if link.endswith(self.landing_page.path, 0, -1):
+                    relative_path = level * '../'
+                    new_link = '<a href="%s%s"' % (relative_path, PAGE_NAME)
+                else:
+                    relative_path = level * '../' + link[len(site_short_path)+9:-1]
+                    new_link = '<a href="%s/%s"' % (relative_path, PAGE_NAME)
+            else:
+                relative_path = level * '../' + link[len(site_short_path)+9:att_test]
+                new_link = '<a href="%s"' % (relative_path)
+            page_content = page_content.replace(link, new_link)
+        #-------------------------------------------------------------------------------
+        return page_content
 
 
 
     def replace_attachment_source(self, page, attachment, parent, as_announcement=None):
         site_path = self.get_site_path()
         current_src='%s_/rsrc/[^>]*/%s%s' % (site_path, parent.path, attachment.name)
-        src_list = re.findall(r''+current_src, page)
+        src_list = re.findall(r''+current_src, page)        
         if as_announcement:
             new_src='./%s/%s' % (parent.pagename, attachment.name)
         else:
-            new_src='./%s' % (attachment.name)
-
+            new_src=attachment.link
         for src_item in src_list:
             page = page.replace(src_item, new_src)
         return page
@@ -251,7 +290,7 @@ class SiteController():
 
 
 
-    def save_page_to_disk(self, page, path, site):
+    def save_page_to_disk(self, page, path, site):    
         full_path = path + page.path
 
         if not os.access(full_path, os.F_OK):
@@ -278,7 +317,13 @@ class SiteController():
             
         template_out.page = page
         template_out.site = site
-        self.save_as_file(content=str(template_out), path=full_path + PAGE_NAME)
+
+        if (page.id == self.landing_page.id):
+            page_path = path
+        else:
+            page_path = full_path
+
+        self.save_as_file(content=str(template_out), path=page_path + PAGE_NAME)
 
         for attachment in page.attachments:
             self.save_attachment_to_file(attachment, full_path)
@@ -302,11 +347,14 @@ class SiteController():
             print 'omitting attachment: ' + path + attachment.name
 
 
-    def get_leading_page_id(self):
+    def get_landing_page(self):
         uri = '%s?path=/' % (self.client.MakeContentFeedUri())
         feed = self.client.GetContentFeed(uri=uri)
-        return feed.entry[0].GetNodeId()
-
+        entry = feed.entry[0]
+        path=entry.GetAlternateLink().href
+        rel_path = path[len(self.get_site_path()):]
+        return LandingPage(id=entry.GetNodeId(), pagename=entry.page_name.text,
+            path=entry.GetAlternateLink().href, rel_path=rel_path)
 
 
     def get_site(self):
@@ -319,7 +367,7 @@ class SiteController():
         site = Site()
         if self.progression:
             print 'downloading site'
-        site.leading_page_id = self.get_leading_page_id()
+        self.landing_page = self.get_landing_page()
         step = 0
         while True:
             uri = '%s?start-index=%s&max-results=%s' % (self.client.MakeContentFeedUri(), step*FEED_FETCH_STEP + 1, (FEED_FETCH_STEP - 1))
@@ -360,6 +408,8 @@ class SiteController():
     def get_page(self, entry, level, parent):
         if self.progression:
             print 'downloading page: ' + entry.page_name.text
+        landing = (entry.GetNodeId() == self.landing_page.id)
+
         page = Page(id=entry.GetNodeId(),
                     kind=entry.Kind(),
                     title=entry.title.text,
@@ -369,7 +419,8 @@ class SiteController():
                     revision=entry.revision.text,
                     pagename=entry.page_name.text,
                     parent=parent,
-                    etag=entry.etag)
+                    etag=entry.etag,
+                    landing=landing)
 
         if self.etag_old:
             self.etag_old.check_page(page.id, page.path)
@@ -383,14 +434,20 @@ class SiteController():
         content_str = self.request_page_content(entry.GetNodeId())
         self.get_site_content(level=level+1, parent=page)
 
+
+        if page.landing:
+            for attachment in page.attachments:
+                attachment.link = './' + self.landing_page.rel_path + '/' + attachment.name
+                
+
         if page.kind == ANNOUNCEMENT:
             content_str2 = content_str
-            content_str2 = self.replace_paths(content_str2, level-1)
+            content_str2 = self.replace_paths(page_content=content_str2, level=level-1, page=page)
             for attachment in page.attachments:
                 content_str2 = self.replace_attachment_source(page=content_str2, attachment=attachment, parent=page, as_announcement=True)
             page.embedded_content = content_str2
 
-        content_str = self.replace_paths(content_str, level)
+        content_str = self.replace_paths(page_content=content_str, level=level, page=page)
         for attachment in page.attachments:
             content_str = self.replace_attachment_source(page=content_str, attachment=attachment, parent=page)
         page.content = content_str
@@ -457,3 +514,5 @@ class SiteController():
 
 if __name__ == "__main__":
     pass
+
+

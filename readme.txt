@@ -315,11 +315,16 @@ USAGE OF TEMPLATES
 
     An example of adding announcements to the announcemetpage:
     #for $announcement in $page.get_announcements()
-        <h3><a href="$announcement.subpage_path">$announcement.title</a></h3>
+        <h3><a href="$announcement.get_alternative_path_to($page)">$announcement.title</a></h3>
         <p>$announcement.embedded_content</p>
     #end for
 
 
+	An example of creating a list of subpages
+	<h3>Subpages</h3>
+	#for $child in $page.childs
+		<a href="$child.get_alternative_path_to($page)">$child.title</a><br/>
+	#end for
 
 
 
