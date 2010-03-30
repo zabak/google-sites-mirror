@@ -61,7 +61,7 @@ $page.content
 <hr/>
 <h3>Subpages</h3>
 #for $child in $page.childs
-<a href="$child.subpage_path">$child.title</a><br/>
+<a href="$child.get_alternative_path_to($page)">$child.title</a><br/>
 #end for
 </div>
 

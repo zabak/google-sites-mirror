@@ -76,6 +76,7 @@ class Site(Parent, Attachmentable):
         self.path=''
         self.path_to_root=''
         self.leading_page_id = 0
+        self.landing=False
 
     def get_leading_page(self):
         for child in self.childs:
@@ -90,6 +91,14 @@ class Site(Parent, Attachmentable):
         return childs
 
 
+class LandingPage():
+    def __init__(self, id, pagename, path, rel_path):
+        self.id=id
+        self.pagename=pagename
+        self.path=path
+        self.rel_path=rel_path        
+
+
 
 class Page(CollectiveObject, Commentable, Parent, Attachmentable):
     """
@@ -98,7 +107,7 @@ class Page(CollectiveObject, Commentable, Parent, Attachmentable):
     """
     def __init__(self, id, title, pagename, kind, author_name, author_email,
                     updated, revision, parent, content=None,
-                    embedded_content=None, etag=None):
+                    embedded_content=None, etag=None, landing=False):
         self.id = id
         self.etag = etag
         self.kind = kind
@@ -113,11 +122,11 @@ class Page(CollectiveObject, Commentable, Parent, Attachmentable):
         self.web_attachments = [] #only for file cabinets
         self.parent = parent
         self.pagename = pagename
-        self.subpage_path = './' + self.pagename + '/' + PAGE_NAME
+        self.landing = landing
+        #self.subpage_path = './' + self.pagename + '/' + PAGE_NAME
         self.path=self.parent.path + self.pagename + '/'
         self.path_to_root=parent.path_to_root + '../'
-        self.list_items=None #only for list pages
-
+        self.list_items=None #only for list pages        
 
     def get_predecessors(self):
         """
@@ -148,7 +157,16 @@ class Page(CollectiveObject, Commentable, Parent, Attachmentable):
 
 
     def get_alternative_path_to(self, page):
-        return page.path_to_root + self.path + PAGE_NAME
+        if self.landing:
+            if page.landing:
+                alt = './' + PAGE_NAME
+            else:
+                alt = page.path_to_root + PAGE_NAME
+        elif page.landing:
+            alt = self.path + PAGE_NAME
+        else:
+            alt = page.path_to_root + self.path + PAGE_NAME
+        return alt
 
 
 
