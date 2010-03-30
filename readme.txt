@@ -284,17 +284,17 @@ USAGE OF TEMPLATES
     </table>
 
    Here was used the other object - site, that has the list of childs (the top-level pages)
-	For highlighting the leading page ('home' by default), one can use methods
-   get_leading_page() and
-	get_non_leading_pages()
-	that can be used, for instance, for lacating the leading page on the top of the navigation
+	For highlighting the landing page ('home' by default), one can use methods
+   get_landing_page() and
+	get_non_landing_pages()
+	that can be used, for instance, for lacating the landing page on the top of the navigation
 	example
 	NAVIGATION
 	<table>
 		<tr><td>
-		<a style="background-color:yellow" href="$site.get_leading_page().get_alternative_path_to($page)">$site.get_leading_page().title</a>	
+		<a style="background-color:yellow" href="$site.get_landing_page().get_alternative_path_to($page)">$site.get_landing_page().title</a>	
     	</td></tr>
-		#for $child in $site.get_non_leading_pages()
+		#for $child in $site.get_non_landing_pages()
 			<tr><td>
 			<a href="$child.get_alternative_path_to($page)">$child.title</a>	
     		</td></tr>
