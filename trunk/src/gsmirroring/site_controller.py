@@ -5,6 +5,7 @@ from Cheetah.Template import Template
 import gdata.sites.client
 import gdata.sites.data
 import gdata.gauth
+from BeautifulSoup import BeautifulSoup
 
 
 import time
@@ -166,7 +167,7 @@ class SiteController():
         uri = '%s%s' % (self.client.make_content_feed_uri(), page_id)
         response = self.client.request(method='GET', uri=uri)
         content_str = str(response.read())
-        return content_str[content_str.find('<content'): content_str.find('</content>') + 10]
+        return BeautifulSoup(content_str[content_str.find('<content'): content_str.find('</content>') + 10]).prettify()
 
 
 

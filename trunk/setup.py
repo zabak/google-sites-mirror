@@ -29,6 +29,7 @@ The complete Sites structure is preserved, including the attachments. The script
     package_dir = {'gsmirroring':'src/gsmirroring' },
     install_requires= [ 
          'Cheetah',
+	 'BeautifulSoup',
          'gdata'
          ],
     package_data = {
