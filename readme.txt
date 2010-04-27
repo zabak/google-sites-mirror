@@ -378,6 +378,207 @@ USAGE OF TEMPLATES
 
 
 
+HANDLING THE LAYOUTS
+
+
+Google Sites supprots nine kinds of layout:
+	One column (simple)
+	Two column (simple)
+	Three colum (simple)
+	One column 
+	Two column 
+	Three colum 
+	Left sidebar
+	Right sidebar
+	Left and right sidebars
+
+
+Layout information are included in HTML code via classes. 
+Each layout and every layout component (panel) has it's class name which can be set in CSS (in the template) to specify particular page sections.
+
+Class names for all layouts and their components are described below:
+
+
+
+One column (simple)
+
+                             sites-layout-name-one-column
+ -----------------------------------------------------------------------------------
+|                                                                                   |
+|                              sites-tile-name-content-1                            |
+|                                                                                   |
+ -----------------------------------------------------------------------------------
+
+
+Two column (simple)
+
+                             sites-layout-name-two-column
+ -----------------------------------------------------------------------------------
+|                                           |                                       |
+|       sites-tile-name-content-1           |       sites-tile-name-content-2       |
+|                                           |                                       |
+ -----------------------------------------------------------------------------------
+
+
+
+Three colum (simple)
+
+                             sites-layout-name-three-column 
+ -----------------------------------------------------------------------------------
+|                           |                           |                           |
+| sites-tile-name-content-1 | sites-tile-name-content-2 | sites-tile-name-content-3 |
+|                           |                           |                           |
+ -----------------------------------------------------------------------------------
+
+
+One column 
+
+                             sites-layout-name-one-column-hf
+ -----------------------------------------------------------------------------------
+|                               sites-tile-name-header                              |
+ -----------------------------------------------------------------------------------
+|                                                                                   |
+|                              sites-tile-name-content-1                            |
+|                                                                                   |
+ -----------------------------------------------------------------------------------
+|                               sites-tile-name-footer                              |
+ -----------------------------------------------------------------------------------
+
+
+Two column 
+
+                             sites-layout-name-two-column-hf
+ -----------------------------------------------------------------------------------
+|                               sites-tile-name-header                              |
+ -----------------------------------------------------------------------------------
+|                                           |                                       |
+|       sites-tile-name-content-1           |       sites-tile-name-content-2       |
+|                                           |                                       |
+ -----------------------------------------------------------------------------------
+|                               sites-tile-name-footer                              |
+ -----------------------------------------------------------------------------------
+
+
+
+Three colum 
+
+                             sites-layout-name-three-column-hf
+ -----------------------------------------------------------------------------------
+|                               sites-tile-name-header                              |
+ -----------------------------------------------------------------------------------
+|                           |                           |                           |
+| sites-tile-name-content-1 | sites-tile-name-content-2 | sites-tile-name-content-3 |
+|                           |                           |                           |
+ -----------------------------------------------------------------------------------
+|                               sites-tile-name-footer                              |
+ -----------------------------------------------------------------------------------
+
+
+
+Left sidebar
+
+                            sites-layout-name-left-sidebar-hf
+ -----------------------------------------------------------------------------------
+|                               sites-tile-name-header                              |
+ -----------------------------------------------------------------------------------
+|          sites-tile-name-content-1       |       sites-tile-name-content-2        |
+|            sites-canvas-sidebar          |                                        |
+ -----------------------------------------------------------------------------------
+|                               sites-tile-name-footer                              |
+ -----------------------------------------------------------------------------------
+
+
+    
+
+
+Right sidebar
+
+                            sites-layout-name-right-sidebar-hf
+ -----------------------------------------------------------------------------------
+|                               sites-tile-name-header                              |
+ -----------------------------------------------------------------------------------
+|          sites-tile-name-content-1       |       sites-tile-name-content-2        |
+|                                          |          sites-canvas-sidebar          |
+ -----------------------------------------------------------------------------------
+|                               sites-tile-name-footer                              |
+ -----------------------------------------------------------------------------------
+
+
+
+Left and right sidebars
+
+
+                            sites-layout-name-dual-sidebar-hf
+ -----------------------------------------------------------------------------------
+|                               sites-tile-name-header                              |
+ -----------------------------------------------------------------------------------
+| sites-tile-name-content-1 | sites-tile-name-content-2 | sites-tile-name-content-3 |
+|    sites-canvas-sidebar   |                           |   sites-canvas-sidebar    |
+ -----------------------------------------------------------------------------------
+|                               sites-tile-name-footer                              |
+ -----------------------------------------------------------------------------------
+
+If you want to set a particular object in a particular layout, you have to specify the layout class, a panel class and the object tag as follows
+
+.LAYOUT_NAME .PANEL_NAME OBJECT_TO_BE_SET {
+//CSS code
+}
+
+Examples:
+To set color of title (H2) of Three colum layout in the third column just add the following code into CSS
+
+.sites-layout-name-three-column-hf .sites-tile-name-content-3 H2 {
+	color: #0000ff;
+}
+
+To specify the header for all layout (which contain header panel) just omit layout class
+
+.sites-tile-name-header {
+// CSS code
+}
+
+More complex examle:
+
+.sites-tile-name-footer {
+	color: #ffffff;
+  	background: #55554C 
+  	border-top: solid 1px #72726E;
+  	border-bottom: solid 3px #53534A;
+}
+
+.sites-layout-name-right-sidebar-hf {
+	margin-top:10px;	
+}
+
+.sites-layout-name-right-sidebar-hf .sites-canvas-sidebar {    
+	float: left;
+   width: 210px;
+	margin-left: 20px ;		
+}
+
+.sites-layout-name-right-sidebar-hf .sites-tile-name-content-1 {    				
+   width: 430px;	 	
+	margin-left: 15px ;
+	margin-bottom: 5px;			
+  }
+
+.sites-layout-name-right-sidebar-hf h4 {    
+	color: #00ff00;
+	margin-bottom: 10px ;		
+ }
+
+.sites-layout-name-one-column-hf .sites-tile-name-content-1 {
+	width: 640px;	 		
+	margin-left:20px;
+	margin-right:20px;
+}
+
+
+
+
+
+
+
     For more details about the objects and their attributes see module objects
     and for more examples check out the default templates.
 
