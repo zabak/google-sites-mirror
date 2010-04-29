@@ -75,18 +75,18 @@ class Site(Parent, Attachmentable):
         self.attachments = []
         self.path=''
         self.path_to_root=''
-        self.leading_page_id = 0
+        self.landing_page_id = 0
         self.landing=False
 
-    def get_leading_page(self):
+    def get_landing_page(self):
         for child in self.childs:
-            if child.id == self.leading_page_id:
+            if child.landing:
                 return child
 
-    def get_non_leading_pages(self):
+    def get_non_landing_pages(self):
         childs = []
         for child in self.childs:
-            if child.id != self.leading_page_id:
+            if not child.landing:
                 childs.append(child)
         return childs
 
@@ -127,6 +127,13 @@ class Page(CollectiveObject, Commentable, Parent, Attachmentable):
         self.path=self.parent.path + self.pagename + '/'
         self.path_to_root=parent.path_to_root + '../'
         self.list_items=None #only for list pages        
+
+    def get_path_to_root(self):
+        if self.landing:
+            return './'
+        else:           
+            return self.path_to_root
+
 
     def get_predecessors(self):
         """
