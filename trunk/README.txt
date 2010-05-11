@@ -1,5 +1,21 @@
 
-ABOUT THE SCRIPT
+
+
+
+====TABLE OF CONTENT=====
+ 1. ABOUT THE SCRIPT
+ 2. REQUIREMENTS
+ 3. INSTALLATION
+ 4. USAGE
+  4.1 RUNNING THE SCRIPT   
+  4.2 STRUCTURE OF THE MIRRORING SITE
+  4.3 XML DOCUMENT etags.xml
+  4.4 MIRRORING THE SITE AGAIN
+  4.5 USAGE OF TEMPLATES
+   4.5.1 BASICS AND EXAMPLES
+   4.5.2 HANDLING THE LAYOUTS
+
+1 ABOUT THE SCRIPT
 
 The gsmirror script is a tool for exporting Google Sites to the disk as html pages.
 It uses Google Data API for interacting with Google Sites and Cheetah Template Engine
@@ -10,7 +26,7 @@ appearance and will be periodically updated to the current version.
 
 
 
-REQUIREMENTS
+2 REQUIREMENTS
 
 To use the gsmirror script, you'll need:
  - Python 2.2+ (however, version 2.5 or higher is recommended)
@@ -25,7 +41,15 @@ To use the gsmirror script, you'll need:
 
 
 
-USAGE OF THE SCRIPT
+3 INSTALLATION
+  TODO
+
+
+4 USAGE
+
+
+
+4.1 RUNNING THE SCRIPT   
 
 To run the script get to the directory with the gsmirror.py file and type:
     python gsmirror.py [options]
@@ -113,9 +137,9 @@ where possible options are:
 
 
 
-STRUCTURE OF THE MIRRORING SITE
+4.2 STRUCTURE OF THE MIRRORING SITE
 
-The directory structure of the mirroring site is as follows:
+The directory structure of the mirroring site is of the form as follows:
     -ROOT_DIRECTORY and PATH_TO_ROOT_DIRECTORY are specified in gsmirror options
     -A top-level page PAGENAME (located at http://sites.google.com/site/MY_SITE/PAGENAME)
      is saved in a file index.html in PATH_TO_ROOT_DIRECTORY/ROOT_DIRECTORY/PAGENAME/
@@ -123,10 +147,13 @@ The directory structure of the mirroring site is as follows:
      is saved in a file index.html in PATH_TO_ROOT_DIRECTORY/ROOT_DIRECTORY/PAGENAME/SUBPAGE/
     -Attachment are saved to the same directory as the page they belog to.
     -The etags.xml file is saved to PATH_TO_ROOT_DIRECTORY/ROOT_DIRECTORY/
+    -The landing page (a page choosen as the main page, usually 'home') is saved 
+     in a file index.html in PATH_TO_ROOT_DIRECTORY/ROOT_DIRECTORY/
+     However, subpages and attachments of the landing page are saved 
+     in PATH_TO_ROOT_DIRECTORY/ROOT_DIRECTORY/LANDING_PAGENAME/
 
 
-
-XML DOCUMENT etags.xml
+4.3 XML DOCUMENT etags.xml
 
     etags.xml is an XML document that is stored in the root directory.
     The document contains information about the state of the site elements
@@ -136,7 +163,7 @@ XML DOCUMENT etags.xml
 
 
 
-MIRRORING THE SITE AGAIN
+4.4 MIRRORING THE SITE AGAIN
 
     In case the site has been mirrored (to the same path) before (ie. there is
     a file etags.xml in path/root_directory/). Information about the last
@@ -147,7 +174,10 @@ MIRRORING THE SITE AGAIN
 
 
 
-USAGE OF TEMPLATES
+4.5 USAGE OF TEMPLATES
+
+
+4.5.1 BASICS AND EXAMPLES
 
     Every template file contains mixture of html/css code and Cheetah code.
     For complete documetation of the Cheetah syntax see
@@ -273,7 +303,7 @@ USAGE OF TEMPLATES
 
 
 
-    An example of creating navigation:
+   An example of creating navigation:
 	NAVIGATION
 	<table>
         #for $child in $site.childs
@@ -287,7 +317,7 @@ USAGE OF TEMPLATES
 	For highlighting the landing page ('home' by default), one can use methods
    get_landing_page() and
 	get_non_landing_pages()
-	that can be used, for instance, for lacating the landing page on the top of the navigation
+	that can be used, for instance, for locating the landing page on the top of the navigation
 	example
 	NAVIGATION
 	<table>
@@ -378,8 +408,7 @@ USAGE OF TEMPLATES
 
 
 
-HANDLING THE LAYOUTS
-
+4.5.2 HANDLING THE LAYOUTS
 
 Google Sites supprots nine kinds of layout:
 	One column (simple)
