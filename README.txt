@@ -3,6 +3,7 @@
 
 
 ====TABLE OF CONTENT=====
+ 
  1. ABOUT THE SCRIPT
  2. REQUIREMENTS
  3. INSTALLATION
@@ -28,6 +29,7 @@ appearance and will be periodically updated to the current version.
 
 2 REQUIREMENTS
 
+
 To use the gsmirror script, you'll need:
  - Python 2.2+ (however, version 2.5 or higher is recommended)
  - Google Data Python client library
@@ -42,7 +44,15 @@ To use the gsmirror script, you'll need:
 
 
 3 INSTALLATION
-  TODO
+
+	1) open a shell
+	2) go to the directory where you downloaded the archive gsmirror-VERSION.tar.gz
+    cd <archive_path>
+	3) expand the archive
+    gunzip -c gsmirror-VERSION.tar.gz | tar xf -
+    cd gsmirror-VERSION
+	4) install the package
+    python setup.py install  
 
 
 4 USAGE
@@ -51,8 +61,8 @@ To use the gsmirror script, you'll need:
 
 4.1 RUNNING THE SCRIPT   
 
-To run the script get to the directory with the gsmirror.py file and type:
-    python gsmirror.py [options]
+If you installed the script as above you should be able to run it from anywhere by typing
+    gsmirror [options]
 
 where possible options are:
     -s, --site <STRING>       the webspace name of your site (e.g. mySite)
@@ -64,7 +74,7 @@ where possible options are:
     -n, --name <STRING>       name of the root directory where the site is to be saved (e.g. my_site)
                               (optional) more information in path & name paragraph
     -t, --templates <STRING>  path to the directory with template files
-                              (optional)
+                              (compulsory)
     -l  --log                 print progress of the mirroring process
                               (optional)
         --email <STRING>      the user's email address or username
@@ -76,49 +86,42 @@ where possible options are:
 
 
     examples:
-        python gsmirror.py --site=mysite --path=/home/me/sites/ --name=my_site --templates=/home/me/teplates/
+        gsmirror --site=mysite --path=/home/me/sites/ --name=my_site --templates=/home/me/teplates/
              Run the mirroring of the site 'mysite' found in
              the URL http://sites.google.com/site/mysite/ and
              save it into the directory 'my_site' at
              the path '/home/me/sites/' using templates
              at the path '/home/me/teplates/'
 
-        python gsmirror.py -s mysite2 -d mydomain.org -p /home/me/ -n my_site2 -l
+        gsmirror -s mysite2 -d mydomain.org -p /home/me/ -n my_site2 -l -t PATH_TO_gsmirror-VERSION/templates/default_templates/
              Run the mirroring of the site 'mysite2' hosted on
              a Google Apps domain 'mydomain.org' found in
              the URL http://sites.google.com/a/mydomain.org/mysite2/ and
              save it into the directory 'my_site2' at
-             the path '/home/me/' using default templates
-             at the path './templates/default_templates/' and during the mirroring will
+             the path '/home/me/' using default templates and during the mirroring will
              print information about a progress.
 
 
 
-    examples with existing sites
-        python gsmirror.py -s www -d staremapy.cz -n staremapy -t ./templates/staremapy_templates/ -l
+    examples with existing site
+        gsmirror -s www -d staremapy.cz -n staremapy -t PATH_TO_gsmirror-VERSION/templates/staremapy_templates/ -l
             Creates a root directory 'staremapy' at the current working
             directory and into this directory export a site
             http://sites.google.com/a/staremapy.cz/www/
-            Use templates from ./staremapy_templates/
-
-        python gsmirror.py -s gsmirrortest -l
-            Creates a root directory 'gsmirrortest' at the current working
-            directory and into this directory export a site
-            http://sites.google.com/site/gsmirrortest/
+            using appropriate templates.
 
 
 
     templates:
-        If you use your own templates (i.e. templates option is specified) then
-        there (at the path you specified) have to be five files named as follows:
+        If you use your own templates then there (at the path you specified)
+        have to be five files named as follows:
             'file_cabinet_template.tmpl'
             'announcements_page_template.tmpl'
             'announcement_template.tmpl'
             'listpage_template.tmpl'
             'webpage_template.tmpl'
-        If you don't specify templates, default templates will be used.
-        Default templates consist of the same five files as above and are stored
-        in the directory './templates/default_templates/'.
+        You can use default templates located at gsmirror-VERSION/templates/default_templates/
+        Default templates consist of the same five files as above.
         Usage of templates is described in paragraph below USAGE OF TEMPLATES
 
 
@@ -197,11 +200,11 @@ The directory structure of the mirroring site is of the form as follows:
         listpage
         webpage
 
-    Although every page typy serves for different purpose, the usege of
+    Although every page type serves for different purpose, the usege of
     templates is almost the same for all of them (differences are described at
     the end of this paragraph).
 
-    A template has two objects at its disposal, page and site.
+    Each template has two objects at its disposal, page and site.
     So let's begin with an example of a simple template.
 
     <html>
@@ -310,7 +313,7 @@ The directory structure of the mirroring site is of the form as follows:
         <tr><td>
             <a href="$child.get_alternative_path_to($page)">$child.title</a>
         </td></tr>
-	#end for
+        #end for
     </table>
 
    Here was used the other object - site, that has the list of childs (the top-level pages)
