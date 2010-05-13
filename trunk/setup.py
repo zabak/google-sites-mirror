@@ -12,7 +12,7 @@ if sys.version_info[:3] < (2, 5, 0):
 
 setup(
     name='gsmirror',
-    version='1.0.1',
+    version='1.0.2',
     description='Google Sites Mirroring & Backup Script',
     long_description = """\
 A Python module and script, which is able to download content from Google Sites (via Sites Data API) and create a mirror of the original web sites, but with a custom design (via Cheetah template) - for hosting on a traditional webserver.
