@@ -471,10 +471,6 @@ Each layout and every layout component (panel) has it's class name which can be 
 Class names for all layouts and their components are described below:
 
 
-||tbale||celle||
-||  ddd|| dsdffffffffff||
-
-
 *One column (simple)*
 
 sites-layout-name-one-column
@@ -487,7 +483,7 @@ sites-layout-name-one-column
 sites-layout-name-two-column
 ||sites-tile-name-content-1||sites-tile-name-content-2||
 
------------------------------------------------------------------------------------
+
 
 
 
@@ -495,41 +491,32 @@ sites-layout-name-two-column
 
 
 sites-layout-name-three-column
------------------------------------------------------------------------------------
-| | | |
-| sites-tile-name-content-1 | sites-tile-name-content-2 | sites-tile-name-content-3 |
-| | | |
------------------------------------------------------------------------------------
+
+
+|| sites-tile-name-content-1 || sites-tile-name-content-2 || sites-tile-name-content-3 ||
+
+
 
 
 *One column*
 
 
 sites-layout-name-one-column-hf
------------------------------------------------------------------------------------
-| sites-tile-name-header |
------------------------------------------------------------------------------------
-| |
-| sites-tile-name-content-1 |
-| |
------------------------------------------------------------------------------------
-| sites-tile-name-footer |
------------------------------------------------------------------------------------
+
+|| sites-tile-name-header ||
+|| sites-tile-name-content-1 ||
+|| sites-tile-name-footer ||
+
 
 
 *Two column*
 
 
 sites-layout-name-two-column-hf
------------------------------------------------------------------------------------
-| sites-tile-name-header |
------------------------------------------------------------------------------------
-| | |
-| sites-tile-name-content-1 | sites-tile-name-content-2 |
-| | |
------------------------------------------------------------------------------------
-| sites-tile-name-footer |
------------------------------------------------------------------------------------
+
+|||| sites-tile-name-header ||
+|| sites-tile-name-content-1 || sites-tile-name-content-2 ||
+|||| sites-tile-name-footer ||
 
 
 
@@ -537,15 +524,10 @@ sites-layout-name-two-column-hf
 
 
 sites-layout-name-three-column-hf
------------------------------------------------------------------------------------
-| sites-tile-name-header |
------------------------------------------------------------------------------------
-| | | |
-| sites-tile-name-content-1 | sites-tile-name-content-2 | sites-tile-name-content-3 |
-| | | |
------------------------------------------------------------------------------------
-| sites-tile-name-footer |
------------------------------------------------------------------------------------
+
+|||||| sites-tile-name-header ||
+|| sites-tile-name-content-1 || sites-tile-name-content-2 || sites-tile-name-content-3 ||
+|||||| sites-tile-name-footer ||
 
 
 
@@ -553,14 +535,10 @@ sites-layout-name-three-column-hf
 
 
 sites-layout-name-left-sidebar-hf
------------------------------------------------------------------------------------
-| sites-tile-name-header |
------------------------------------------------------------------------------------
-| sites-tile-name-content-1 | sites-tile-name-content-2 |
-| sites-canvas-sidebar | |
------------------------------------------------------------------------------------
-| sites-tile-name-footer |
------------------------------------------------------------------------------------
+
+|||| sites-tile-name-header ||
+|| sites-canvas-sidebar (sites-tile-name-content-1) || sites-tile-name-content-2 ||
+|||| sites-tile-name-footer ||
 
 
 
@@ -570,14 +548,11 @@ sites-layout-name-left-sidebar-hf
 
 
 sites-layout-name-right-sidebar-hf
------------------------------------------------------------------------------------
-| sites-tile-name-header |
------------------------------------------------------------------------------------
-| sites-tile-name-content-1 | sites-tile-name-content-2 |
-| | sites-canvas-sidebar |
------------------------------------------------------------------------------------
-| sites-tile-name-footer |
------------------------------------------------------------------------------------
+
+|||| sites-tile-name-header ||
+|| sites-tile-name-content-1 || sites-canvas-sidebar (sites-tile-name-content-2) ||
+|| sites-tile-name-footer ||
+
 
 
 
@@ -586,10 +561,9 @@ sites-layout-name-right-sidebar-hf
 
 sites-layout-name-dual-sidebar-hf
 
-||||||sites-tile-name-header||||||
-||sites-tile-name-content-1||sites-tile-name-content-2||sites-tile-name-content-3||
-||sites-canvas-sidebar|| ||sites-canvas-sidebar||
-||||||sites-tile-name-footer||||||
+||||||sites-tile-name-header||
+||sites-canvas-sidebar (sites-tile-name-content-1)||sites-tile-name-content-2||sites-canvas-sidebar (sites-tile-name-content-3)||
+||||||sites-tile-name-footer||
 
 
 If you want to set a particular object in a particular layout, you have to specify the layout class, a panel class and the object tag as follows
@@ -658,5 +632,3 @@ margin-right:20px;
 
 For more details about the objects and their attributes see module objects
 and for more examples check out the default templates.
-
-
